@@ -1,7 +1,7 @@
 {
   "name": "chitra",
   "version": "0.1.0",
-  "description": "🎨 Automatically generate beautiful portfolio screenshots for static HTML websites using Playwright and Sharp.",
+  "description": "Automatically generate beautiful portfolio screenshots for static HTML websites using Playwright and Sharp.",
   "author": "",
   "license": "MIT",
   "keywords": [

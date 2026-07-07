@@ -1,68 +1,50 @@
-# Chitra 📸
+# Chitra
 
-> **Beautiful, zero-config screenshots for static HTML portfolio websites.**
-
-Chitra automatically scans your project folders, fires up a local static server for each site, opens them in a headless Chromium browser, waits for all images/fonts to settle, disables animations, captures screenshots at desktop/tablet/mobile viewports, and programmatically composites a gorgeous Safari/Arc-style browser chrome with a soft drop shadow on a padded canvas.
-
-All in a single command, without external API keys or paid services.
-
----
+Chitra is an open-source, zero-configuration screenshot utility for static HTML portfolio websites. It automatically discovers local site directories, hosts them on temporary static servers, and generates framed portfolio screenshots across multiple viewports using Playwright and Sharp.
 
 ## Features
 
-- **Zero-config:** Just run `chitra` and let it auto-discover your folders.
-- **Provider Architecture:** Extensible structure designed to support Vite, Next.js, and Astro in the future.
-- **Leaf-Site Discovery:** Walks nested folder structures intelligently.
-- **Smart Waiting:** Waits for DOM, fonts, and images (no arbitrary sleeps).
-- **Premium Aesthetics:** Automated Arc/Safari browser framing and drop shadow overlays using high-performance Sharp (libvips) compositing.
-- **Zero leakage:** Opens a fresh, isolated browser page per site.
-
----
+- **Zero Configuration:** Scan and discover static sites automatically with no configuration files required.
+- **Provider Architecture:** Extensible architecture designed to support dynamic framework providers (such as Vite, Next.js, and Astro) in future releases.
+- **Leaf-Site Filtering:** Recursively walks directory trees and intelligently ignores parent directories if subdirectories contain their own entry points.
+- **Asset Load Detection:** Waits for network idle states, web fonts, and image elements to resolve before capturing.
+- **Automated Framing:** Generates Arc-style browser chrome headers, phone status bars, and soft drop-shadow backdrops programmatically using SVG overlays and Sharp.
+- **Isolated Execution:** Launches a separate browser page context per site to prevent session or style leakage.
 
 ## Installation
 
+Clone the repository and install the dependencies:
+
 ```bash
-# Clone the repository
-git clone <this-repo> chitra
+git clone <repository-url> chitra
 cd chitra
-
-# Install dependencies
 pnpm install
-
-# Install Playwright Chromium binaries (first time only)
 pnpm exec playwright install chromium
 ```
 
----
-
 ## Usage
 
-Run Chitra directly from the workspace:
+To scan the current directory and generate screenshots:
 
 ```bash
-# Scan the current directory recursively
 pnpm screenshot
-
-# Scan a specific directory recursively
-pnpm screenshot ../my-sites-folder
 ```
 
-Or run the script using Node:
+To scan a specific target directory:
 
 ```bash
-node src/cli/index.js ./sites
+pnpm screenshot /path/to/sites
 ```
 
-Once published, you can run it globally:
+Alternatively, invoke the CLI script directly using Node:
+
 ```bash
-npx chitra ./sites
+node src/cli/index.js /path/to/sites
 ```
 
----
+## Output Structure
 
-## Screenshot Output Structure
-
-Screenshots are generated inside the `screenshots/` directory of the current working directory from which Chitra was run:
+All screenshots are generated in the `screenshots` directory relative to the current working directory where the command is executed:
 
 ```text
 screenshots/
@@ -70,51 +52,41 @@ screenshots/
   dental-clinic-tablet.webp
   dental-clinic-mobile.webp
   dental-clinic-full.webp
-  novacare-desktop.webp
-  ...
 ```
 
-### Viewports & Frame Styles
+### Viewports and Frames
 
-| Viewport Name | Dimension | Frame Style | Output |
-|---|---|---|---|
-| **desktop** | 1440 × 900 | Arc/Safari Chrome + Shadow | `[slug]-desktop.webp` |
-| **tablet** | 1024 × 1366 | Arc/Safari Chrome + Shadow | `[slug]-tablet.webp` |
-| **mobile** | 390 × 844 | Phone Shell (Notch/Status Bar) | `[slug]-mobile.webp` |
-| **full** | dynamic height | None (Raw Page Capture) | `[slug]-full.webp` |
+| Viewport | Dimensions | Frame Type | Filename Pattern |
+| --- | --- | --- | --- |
+| **desktop** | 1440 × 900 | Browser Chrome + Shadow | `[slug]-desktop.webp` |
+| **tablet** | 1024 × 1366 | Browser Chrome + Shadow | `[slug]-tablet.webp` |
+| **mobile** | 390 × 844 | Mobile Status Bar + Notch + Shadow | `[slug]-mobile.webp` |
+| **full** | Dynamic | Unframed (Raw Full-Page Capture) | `[slug]-full.webp` |
 
----
-
-## Internal Architecture
-
-Chitra is structured as a clean pipeline:
+## Project Architecture
 
 ```text
 src/
-  cli/          # Command-line entry points
+  cli/          # Command-line interface and orchestrator
   engine/
-    discover/   # Find index.html folders & normalize names
-    capture/    # Playwright page sizing & capture loops
-    frame/      # Sharp card compositing & output paths
-    report/     # Event-based progress reporting
-  providers/    # Port hosting abstractions (HTML, Vite, etc.)
-  frames/       # Programmatic SVG frame builders (Arc, Mobile)
-  models/       # Site and Screenshot data models
-  utils/        # Ports, files, and paths helpers
+    discover/   # Site directory discovery and slug normalization
+    capture/    # Playwright browser interactions and wait states
+    frame/      # Card composition and path resolution
+    report/     # Command-line reporting interface
+  providers/    # Static and framework server providers
+  frames/       # Frame rendering configurations
+  models/       # Internal data representations
+  utils/        # File, path, and port helpers
 ```
-
----
 
 ## Roadmap
 
 - **v0.1:** HTML/CSS/JS discovery, Arc/Mobile frames, auto port allocation (Current)
-- **v0.2:** CLI configurations (`chitra.config.js` or flags) for framing colors, padding, and viewports
-- **v0.3:** Vite provider (`providers/vite/`)
-- **v0.4:** Next.js & React hydration provider (`providers/next/`)
-- **v0.5:** Astro provider (`providers/astro/`)
-- **v1.0:** General framework auto-detection
-
----
+- **v0.2:** CLI configurations for custom viewport sizes, background colors, and canvas padding
+- **v0.3:** Vite framework provider support
+- **v0.4:** Next.js framework provider support
+- **v0.5:** Astro framework provider support
+- **v1.0:** Dynamic framework auto-detection
 
 ## License
 
