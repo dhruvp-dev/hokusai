@@ -1,0 +1,34 @@
+{
+  "name": "chitra",
+  "version": "0.1.0",
+  "description": "🎨 Automatically generate beautiful portfolio screenshots for static HTML websites using Playwright and Sharp.",
+  "author": "",
+  "license": "MIT",
+  "keywords": [
+    "screenshot",
+    "playwright",
+    "sharp",
+    "portfolio",
+    "automation",
+    "webp",
+    "static-site",
+    "thumbnails"
+  ],
+  "type": "module",
+  "bin": {
+    "chitra": "./src/cli/index.js"
+  },
+  "scripts": {
+    "start": "node src/cli/index.js",
+    "screenshot": "node src/cli/index.js"
+  },
+  "dependencies": {
+    "http": "^0.0.1-security",
+    "playwright": "^1.45.0",
+    "serve-handler": "^6.1.5",
+    "sharp": "^0.35.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
