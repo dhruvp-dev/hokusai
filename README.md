@@ -1,6 +1,8 @@
-# Chitra
+# Hokusai
 
-Chitra is an open-source, zero-configuration screenshot utility for static HTML portfolio websites. It automatically discovers local site directories, hosts them on temporary static servers, and generates framed portfolio screenshots across multiple viewports using Playwright and Sharp.
+> **Beautiful website screenshots. Zero configuration.**
+
+Hokusai is an open-source, zero-configuration screenshot utility for static HTML portfolio websites. It automatically discovers local site directories, hosts them on temporary static servers, and generates framed portfolio screenshots across multiple viewports using Playwright and Sharp.
 
 ## Features
 
@@ -13,11 +15,23 @@ Chitra is an open-source, zero-configuration screenshot utility for static HTML 
 
 ## Installation
 
-Clone the repository and install the dependencies:
+Install globally via npm:
 
 ```bash
-git clone <repository-url> chitra
-cd chitra
+npm i -g hokusai
+```
+
+Or run directly without installation:
+
+```bash
+npx hokusai
+```
+
+Alternatively, clone the repository and install the dependencies:
+
+```bash
+git clone <repository-url> hokusai
+cd hokusai
 pnpm install
 pnpm exec playwright install chromium
 ```
@@ -27,13 +41,25 @@ pnpm exec playwright install chromium
 To scan the current directory and generate screenshots:
 
 ```bash
-pnpm screenshot
+hokusai
 ```
 
 To scan a specific target directory:
 
 ```bash
-pnpm screenshot /path/to/sites
+hokusai ./sites
+```
+
+Or:
+
+```bash
+hokusai ./portfolio
+```
+
+If running the cloned repository locally:
+
+```bash
+pnpm screenshot
 ```
 
 Alternatively, invoke the CLI script directly using Node:

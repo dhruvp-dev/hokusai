@@ -1,6 +1,6 @@
 export default {
   outputDir: 'screenshots',
-  exclude: ['node_modules', '.git', 'screenshots', 'chitra', 'src'],
+  exclude: ['node_modules', '.git', 'screenshots', 'hokusai', 'src'],
   basePort: 8700,
 
   viewports: [

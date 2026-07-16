@@ -7,11 +7,11 @@ const DIM = '\x1b[2m';
 
 export default class Reporter {
   /**
-   * Called when Chitra starts.
+   * Called when Hokusai starts.
    * @param {number} totalSites
    */
   start(totalSites) {
-    console.log(`\n${BOLD}📸 Chitra${RESET}`);
+    console.log(`\n${BOLD}📸 Hokusai${RESET}`);
     console.log(`${DIM}──────────────────────────────────────────────${RESET}`);
     console.log(`Found ${totalSites} website${totalSites === 1 ? '' : 's'}\n`);
   }

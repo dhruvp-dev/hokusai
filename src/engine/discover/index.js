@@ -9,7 +9,7 @@ import path from 'path';
  * @param {string[]} excludes - Directory names to ignore
  * @returns {Promise<string[]>} List of absolute paths of discovered sites
  */
-export async function discover(rootDir, excludes = ['node_modules', '.git', 'screenshots', 'chitra', 'src']) {
+export async function discover(rootDir, excludes = ['node_modules', '.git', 'screenshots', 'hokusai', 'src']) {
   const allDirsWithIndex = [];
 
   function walk(currentDir) {

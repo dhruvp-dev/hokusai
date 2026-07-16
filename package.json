@@ -1,7 +1,7 @@
 {
-  "name": "chitra",
+  "name": "hokusai",
   "version": "0.1.0",
-  "description": "Automatically generate beautiful portfolio screenshots for static HTML websites using Playwright and Sharp.",
+  "description": "Beautiful website screenshots. Zero configuration.",
   "author": "",
   "license": "MIT",
   "keywords": [
@@ -16,7 +16,7 @@
   ],
   "type": "module",
   "bin": {
-    "chitra": "./src/cli/index.js"
+    "hokusai": "./src/cli/index.js"
   },
   "scripts": {
     "start": "node src/cli/index.js",
