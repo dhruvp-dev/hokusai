@@ -1,8 +1,8 @@
 {
-  "name": "hokusai",
-  "version": "0.1.0",
+  "name": "hokusai-ss",
+  "version": "0.1.0-alpha.1",
   "description": "Beautiful website screenshots. Zero configuration.",
-  "author": "",
+  "author": "Dhruv",
   "license": "MIT",
   "keywords": [
     "screenshot",
@@ -15,8 +15,14 @@
     "thumbnails"
   ],
   "type": "module",
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "bin": {
-    "hokusai": "./src/cli/index.js"
+    "hokusai-ss": "src/cli/index.js",
+    "hokusai": "src/cli/index.js"
   },
   "scripts": {
     "start": "node src/cli/index.js",

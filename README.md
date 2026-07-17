@@ -18,13 +18,13 @@ Hokusai is an open-source, zero-configuration screenshot utility for static HTML
 Install globally via npm:
 
 ```bash
-npm i -g hokusai
+npm i -g hokusai-ss
 ```
 
 Or run directly without installation:
 
 ```bash
-npx hokusai
+npx hokusai-ss
 ```
 
 Alternatively, clone the repository and install the dependencies:
@@ -38,22 +38,26 @@ pnpm exec playwright install chromium
 
 ## Usage
 
+*Note: Global installation registers both `hokusai` and `hokusai-ss` commands for convenience.*
+
 To scan the current directory and generate screenshots:
 
 ```bash
+hokusai-ss
+# or
 hokusai
 ```
 
 To scan a specific target directory:
 
 ```bash
-hokusai ./sites
+hokusai-ss ./sites
 ```
 
 Or:
 
 ```bash
-hokusai ./portfolio
+hokusai-ss ./portfolio
 ```
 
 If running the cloned repository locally:
