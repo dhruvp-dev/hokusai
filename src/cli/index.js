@@ -11,6 +11,8 @@ import { applyFrames } from '../engine/frame/index.js';
 import OutputManager from '../engine/frame/output.js';
 import Reporter from '../engine/report/index.js';
 import HtmlProvider from '../providers/html/index.js';
+import UrlProvider from '../providers/url/index.js';
+import { parseAndNormalizeUrl, slugFromUrl } from '../utils/url.js';
 import Site from '../models/Site.js';
 
 function printHelp() {
@@ -22,6 +24,8 @@ Usage:
   hokusai-ss [target-directory] [options]
 
 Options:
+  -u, --url <url>                     Capture a live website URL (can be specified multiple times).
+                                      Example: -u https://example.com -u https://vercel.com
   -v, --viewport <name:widthxheight>  Override or add a viewport configuration (can be specified multiple times).
                                       Example: -v desktop:1920x1080 -v widescreen:2560x1440
   -b, --background <color>            Override background color (hex, rgb, or CSS color name).
@@ -47,6 +51,7 @@ async function main() {
     args = parseArgs({
       args: process.argv.slice(2),
       options: {
+        url: { type: 'string', short: 'u', multiple: true },
         viewport: { type: 'string', short: 'v', multiple: true },
         background: { type: 'string', short: 'b' },
         padding: { type: 'string', short: 'p' },
@@ -79,20 +84,39 @@ async function main() {
   const targetArg = positionals[0];
   const targetDir = targetArg ? path.resolve(process.cwd(), targetArg) : process.cwd();
 
-  // 2. Discover sites
-  const sitePaths = await discover(targetDir, config.exclude);
+  const sites = [];
 
-  // 3. Create Site models
-  const sites = sitePaths.map((sitePath) => {
-    const { slug, displayName } = normalize(sitePath, targetDir);
-    return new Site({ slug, displayName, absolutePath: sitePath });
-  });
+  // 2a. Discover local sites if positional arg is provided OR if no --url flag is passed
+  const hasUrlOption = values.url && values.url.length > 0;
+  if (targetArg || !hasUrlOption) {
+    const sitePaths = await discover(targetDir, config.exclude);
+    for (const sitePath of sitePaths) {
+      const { slug, displayName } = normalize(sitePath, targetDir);
+      sites.push(new Site({ slug, displayName, absolutePath: sitePath }));
+    }
+  }
+
+  // 2b. Add live URL targets
+  if (hasUrlOption) {
+    const urlList = Array.isArray(values.url) ? values.url : [values.url];
+    for (const rawUrl of urlList) {
+      try {
+        const parsed = parseAndNormalizeUrl(rawUrl);
+        const slug = slugFromUrl(parsed);
+        const displayName = parsed.hostname + (parsed.pathname !== '/' ? parsed.pathname : '');
+        sites.push(new Site({ slug, displayName, absolutePath: parsed.href, isUrl: true }));
+      } catch (err) {
+        console.error(`Error: Invalid URL '${rawUrl}' - ${err.message}`);
+        process.exit(1);
+      }
+    }
+  }
 
   const reporter = new Reporter();
   reporter.start(sites.length);
 
   if (sites.length === 0) {
-    console.log('No websites containing index.html were found.');
+    console.log('No websites containing index.html or target URLs were found.');
     return;
   }
 
@@ -114,8 +138,8 @@ async function main() {
     let page = null;
 
     try {
-      // Host the static site
-      const provider = new HtmlProvider();
+      // Prepare site source (local static server or live URL)
+      const provider = site.isUrl ? new UrlProvider() : new HtmlProvider();
       site.provider = provider;
       providerResult = await provider.prepare(site.absolutePath);
       site.url = providerResult.url;

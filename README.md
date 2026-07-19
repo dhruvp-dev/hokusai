@@ -77,6 +77,12 @@ node src/cli/index.js /path/to/sites
 You can customize the viewport sizes, background colors, canvas padding, and framing options directly from the command line:
 
 ```bash
+# Capture a live website URL directly
+hokusai --url https://example.com
+
+# Capture multiple live website URLs
+hokusai --url https://example.com --url https://vercel.com
+
 # Override the canvas background color (accepts CSS color names, hex codes, or rgb/rgba values)
 hokusai --background "#ffffff"
 
@@ -100,6 +106,7 @@ hokusai ./sites -b "#2a2a35" -p 60 -v desktop:1920x1080 -v mobile:375x812
 
 | Option | Shortcut | Type | Description |
 | --- | --- | --- | --- |
+| `--url` | `-u` | `string` | Live website URL to capture. Can be specified multiple times. |
 | `--viewport` | `-v` | `string` | Viewport definition in the format `name:widthxheight`. Can be specified multiple times to override default or add new viewports. |
 | `--background` | `-b` | `string` | Backdrop canvas color. Supports any valid CSS color. |
 | `--padding` | `-p` | `number` | Padding in pixels around the device frames. |
