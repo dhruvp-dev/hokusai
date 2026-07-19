@@ -72,6 +72,40 @@ Alternatively, invoke the CLI script directly using Node:
 node src/cli/index.js /path/to/sites
 ```
 
+## CLI Configuration Options
+
+You can customize the viewport sizes, background colors, canvas padding, and framing options directly from the command line:
+
+```bash
+# Override the canvas background color (accepts CSS color names, hex codes, or rgb/rgba values)
+hokusai --background "#ffffff"
+
+# Change the canvas padding around the device frames
+hokusai --padding 80
+
+# Override or add specific viewports (format name:widthxheight)
+# Replacing existing viewports:
+hokusai --viewport desktop:1920x1080
+# Appending brand new viewports:
+hokusai --viewport widescreen:2560x1440
+
+# Disable device framing completely to output raw screenshot captures
+hokusai --no-frame
+
+# Combine multiple overrides
+hokusai ./sites -b "#2a2a35" -p 60 -v desktop:1920x1080 -v mobile:375x812
+```
+
+### Full Options Reference
+
+| Option | Shortcut | Type | Description |
+| --- | --- | --- | --- |
+| `--viewport` | `-v` | `string` | Viewport definition in the format `name:widthxheight`. Can be specified multiple times to override default or add new viewports. |
+| `--background` | `-b` | `string` | Backdrop canvas color. Supports any valid CSS color. |
+| `--padding` | `-p` | `number` | Padding in pixels around the device frames. |
+| `--no-frame` | | `boolean` | Disable framing entirely; writes raw screenshots. |
+| `--help` | `-h` | `boolean` | Prints usage information. |
+
 ## Output Structure
 
 All screenshots are generated in the `screenshots` directory relative to the current working directory where the command is executed:
@@ -111,8 +145,8 @@ src/
 
 ## Roadmap
 
-- **v0.1:** HTML/CSS/JS discovery, Arc/Mobile frames, auto port allocation (Current)
-- **v0.2:** CLI configurations for custom viewport sizes, background colors, and canvas padding
+- **v0.1:** HTML/CSS/JS discovery, Arc/Mobile frames, auto port allocation
+- **v0.2:** CLI configurations for custom viewport sizes, background colors, and canvas padding (Current)
 - **v0.3:** Vite framework provider support
 - **v0.4:** Next.js framework provider support
 - **v0.5:** Astro framework provider support

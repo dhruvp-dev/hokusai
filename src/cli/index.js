@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 import path from 'path';
+import { parseArgs } from 'node:util';
 import { chromium } from 'playwright';
-import config from '../config.js';
+import defaultConfig, { applyCliOverrides } from '../config.js';
 import { discover } from '../engine/discover/index.js';
 import { normalize } from '../engine/discover/normalize.js';
 import { capture } from '../engine/capture/index.js';
@@ -12,11 +13,70 @@ import Reporter from '../engine/report/index.js';
 import HtmlProvider from '../providers/html/index.js';
 import Site from '../models/Site.js';
 
+function printHelp() {
+  console.log(`
+Hokusai - Beautiful website screenshots. Zero configuration.
+
+Usage:
+  hokusai [target-directory] [options]
+  hokusai-ss [target-directory] [options]
+
+Options:
+  -v, --viewport <name:widthxheight>  Override or add a viewport configuration (can be specified multiple times).
+                                      Example: -v desktop:1920x1080 -v widescreen:2560x1440
+  -b, --background <color>            Override background color (hex, rgb, or CSS color name).
+                                      Example: -b "#ffffff" or -b "rgba(0,0,0,0.5)"
+  -p, --padding <number>              Override padding size in pixels.
+                                      Example: -p 60
+  --no-frame                          Disable device frames entirely.
+  -h, --help                          Show this help message.
+
+Defaults:
+  Target Directory:  Current working directory
+  Padding:           40px
+  Background:        #0f0f14
+  Viewports:         desktop (1440x900), tablet (1024x1366), mobile (390x844)
+`);
+}
+
 async function main() {
   const startTime = Date.now();
 
-  // 1. Resolve target scan directory
-  const targetArg = process.argv[2];
+  let args;
+  try {
+    args = parseArgs({
+      args: process.argv.slice(2),
+      options: {
+        viewport: { type: 'string', short: 'v', multiple: true },
+        background: { type: 'string', short: 'b' },
+        padding: { type: 'string', short: 'p' },
+        frame: { type: 'boolean', default: true },
+        'no-frame': { type: 'boolean' },
+        help: { type: 'boolean', short: 'h' },
+      },
+      strict: true,
+      allowPositionals: true,
+    });
+  } catch (err) {
+    console.error(`Error: ${err.message}`);
+    console.log('Run with -h or --help to see usage instructions.');
+    process.exit(1);
+  }
+
+  const { values, positionals } = args;
+
+  if (values.help) {
+    printHelp();
+    return;
+  }
+
+  if (values['no-frame']) {
+    values.frame = false;
+  }
+
+  // 1. Resolve target scan directory and configuration overrides
+  const config = applyCliOverrides(defaultConfig, values);
+  const targetArg = positionals[0];
   const targetDir = targetArg ? path.resolve(process.cwd(), targetArg) : process.cwd();
 
   // 2. Discover sites
