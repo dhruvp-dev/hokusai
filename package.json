@@ -4,6 +4,14 @@
   "description": "Beautiful website screenshots. Zero configuration.",
   "author": "Dhruv",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhruvp-dev/hokusai.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dhruvp-dev/hokusai/issues"
+  },
+  "homepage": "https://github.com/dhruvp-dev/hokusai#readme",
   "keywords": [
     "screenshot",
     "playwright",

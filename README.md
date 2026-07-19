@@ -30,10 +30,10 @@ npx hokusai-ss
 Alternatively, clone the repository and install the dependencies:
 
 ```bash
-git clone <repository-url> hokusai
+git clone https://github.com/dhruvp-dev/hokusai.git
 cd hokusai
-pnpm install
-pnpm exec playwright install chromium
+npm install
+npx playwright install chromium
 ```
 
 ## Usage
