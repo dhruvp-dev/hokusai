@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hokusai</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span id="logo-icon"></span>
+      Hokusai
+    </div>
+    <div class="flex gap-2">
+      <button id="btn-theme" class="icon-btn" title="Toggle Theme"></button>
+      <button id="btn-settings" class="icon-btn" title="Settings"></button>
+    </div>
+  </header>
+
+  <main id="main-view">
+    <div class="section-title">Quick Capture</div>
+    <div class="quick-actions">
+      <div id="act-visible" class="action-card">
+        <div id="icon-visible"></div>
+        <span>Visible</span>
+      </div>
+      <div id="act-fullpage" class="action-card">
+        <div id="icon-fullpage"></div>
+        <span>Full Page</span>
+      </div>
+      <div id="act-responsive" class="action-card">
+        <div id="icon-responsive"></div>
+        <span>Responsive</span>
+      </div>
+    </div>
+
+    <div class="section-title">Frame Style</div>
+    <div class="chip-row" id="frame-chips">
+      <div class="chip active" data-style="arc">Arc</div>
+      <div class="chip" data-style="firefox">Firefox</div>
+      <div class="chip" data-style="minimal">Minimal</div>
+      <div class="chip" data-style="none">None</div>
+    </div>
+
+    <div class="section-title">Format</div>
+    <div class="chip-row" id="format-chips">
+      <div class="chip active" data-format="webp">WebP</div>
+      <div class="chip" data-format="png">PNG</div>
+    </div>
+
+    <div id="preview-section" class="preview-container hidden">
+      <img id="preview-img" class="preview-canvas" alt="Preview">
+      <div class="preview-actions">
+        <button id="btn-copy" class="btn-primary"></button>
+        <button id="btn-download" class="btn-secondary"></button>
+      </div>
+    </div>
+
+    <div class="section-title">Recent Captures</div>
+    <div id="recent-list" class="recent-list">
+      <div class="text-muted text-center" style="font-size: 12px; padding: 12px 0;">No captures yet</div>
+    </div>
+  </main>
+
+  <script type="module" src="popup.bundle.js"></script>
+</body>
+</html>
