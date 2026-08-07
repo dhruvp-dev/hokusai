@@ -64,26 +64,39 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 4. Bind Event Handlers
   bindSettingsControls();
 
-  // Checkbox option selection for capture types
+  // 3-Column capture mode selection
   let selectedMode = 'CAPTURE_VISIBLE';
   
   const captureCards = [
-    { id: 'act-visible', mode: 'CAPTURE_VISIBLE' },
-    { id: 'act-fullpage', mode: 'CAPTURE_FULLPAGE' },
-    { id: 'act-responsive', mode: 'CAPTURE_RESPONSIVE' }
+    { id: 'act-visible', mode: 'CAPTURE_VISIBLE', key: '1' },
+    { id: 'act-fullpage', mode: 'CAPTURE_FULLPAGE', key: '2' },
+    { id: 'act-responsive', mode: 'CAPTURE_RESPONSIVE', key: '3' }
   ];
+
+  function selectCaptureMode(targetId, mode) {
+    captureCards.forEach(c => {
+      const cardEl = document.getElementById(c.id);
+      if (cardEl) cardEl.classList.toggle('active', c.id === targetId);
+    });
+    selectedMode = mode;
+  }
 
   captureCards.forEach(item => {
     const el = document.getElementById(item.id);
     if (!el) return;
     el.addEventListener('click', () => {
-      captureCards.forEach(c => {
-        const cardEl = document.getElementById(c.id);
-        if (cardEl) cardEl.classList.add('unchecked');
-      });
-      el.classList.remove('unchecked');
-      selectedMode = item.mode;
+      selectCaptureMode(item.id, item.mode);
     });
+  });
+
+  // Keyboard Shortcuts (⌘1, ⌘2, ⌘3 or 1, 2, 3)
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    const match = captureCards.find(c => c.key === e.key);
+    if (match) {
+      e.preventDefault();
+      selectCaptureMode(match.id, match.mode);
+    }
   });
 
   // Submit button triggers capture
@@ -162,6 +175,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         setTimeout(() => { dlBtn.innerHTML = origHtml; }, 1500);
       }
     }
+  });
+
+  // Clear History
+  document.getElementById('btn-clear-history')?.addEventListener('click', async () => {
+    const cleared = await history.clear();
+    renderRecentCaptures(document.getElementById('recent-list'), cleared);
+    setState({ lastCapture: null });
+    const previewSection = document.getElementById('preview-section');
+    if (previewSection) previewSection.classList.add('hidden');
   });
 
   // Initial History Load & Sync Latest Capture

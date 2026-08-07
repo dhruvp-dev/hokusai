@@ -21,6 +21,15 @@ export const history = {
     return updated;
   },
 
+  async remove(id) {
+    const list = await this.get();
+    const updated = list.filter(item => item.id !== id);
+    if (typeof browser !== 'undefined' && browser.storage?.local) {
+      await browser.storage.local.set({ hokusai_history: updated });
+    }
+    return updated;
+  },
+
   async clear() {
     if (typeof browser !== 'undefined' && browser.storage?.local) {
       await browser.storage.local.remove('hokusai_history');

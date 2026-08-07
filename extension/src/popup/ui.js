@@ -1,5 +1,6 @@
 import * as ICONS from '../icons/icons.js';
 import { copyCaptureToClipboard, triggerDownload } from './preview.js';
+import { history } from '../storage/index.js';
 
 export function setupUIElements() {
   // Logo
@@ -80,6 +81,7 @@ export function renderRecentCaptures(container, list) {
         <div class="recent-card-actions">
           <button class="action-icon-btn btn-recent-copy" data-idx="${idx}" title="Copy to clipboard">${ICONS.ICON_COPY}</button>
           <button class="action-icon-btn btn-recent-download" data-idx="${idx}" title="Download">${ICONS.ICON_DOWNLOAD}</button>
+          <button class="action-icon-btn btn-recent-delete" data-idx="${idx}" title="Delete capture">${ICONS.ICON_TRASH}</button>
         </div>
       </div>
     </div>
@@ -108,6 +110,28 @@ export function renderRecentCaptures(container, list) {
       const item = list[parseInt(e.currentTarget.getAttribute('data-idx'))];
       if (item?.dataUrl) {
         await triggerDownload(item.dataUrl, item.format || 'webp');
+      }
+    });
+  });
+
+  // Delete buttons
+  container.querySelectorAll('.btn-recent-delete').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const idx = parseInt(e.currentTarget.getAttribute('data-idx'));
+      const item = list[idx];
+      if (item) {
+        let updatedList;
+        if (item.id) {
+          updatedList = await history.remove(item.id);
+        } else {
+          list.splice(idx, 1);
+          if (typeof browser !== 'undefined' && browser.storage?.local) {
+            await browser.storage.local.set({ hokusai_history: list });
+          }
+          updatedList = list;
+        }
+        renderRecentCaptures(container, updatedList);
       }
     });
   });

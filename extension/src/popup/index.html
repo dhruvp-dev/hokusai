@@ -33,35 +33,36 @@
     <!-- MAIN BODY -->
     <div class="popup-body">
 
-      <!-- CAPTURE CHOICES (CHECKBOX STYLE LIKE REFERENCE IMAGE) -->
+      <!-- CAPTURE CHOICES (3-COLUMN VISUAL CARDS) -->
       <section>
-        <div class="capture-list">
-          <div id="act-visible" class="action-card">
-            <div class="card-checkbox">
-              <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+        <div class="capture-grid">
+          <div id="act-visible" class="action-card active">
+            <div class="wireframe-box">
+              <div class="wf-visible-box"></div>
             </div>
-            <div class="card-text">
-              <span class="card-title">Visible Area</span>
-              <span class="card-desc">Current Viewport</span>
-            </div>
+            <span class="card-title">Visible</span>
+            <span class="card-shortcut">⌘1</span>
           </div>
-          <div id="act-fullpage" class="action-card unchecked">
-            <div class="card-checkbox">
-              <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+          <div id="act-fullpage" class="action-card">
+            <div class="wireframe-box">
+              <div class="wf-fullpage-lines">
+                <div class="wf-line"></div>
+                <div class="wf-line"></div>
+                <div class="wf-line"></div>
+              </div>
             </div>
-            <div class="card-text">
-              <span class="card-title">Full Page</span>
-              <span class="card-desc">Entire Document</span>
-            </div>
+            <span class="card-title">Full Page</span>
+            <span class="card-shortcut">⌘2</span>
           </div>
-          <div id="act-responsive" class="action-card unchecked">
-            <div class="card-checkbox">
-              <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+          <div id="act-responsive" class="action-card">
+            <div class="wireframe-box">
+              <div class="wf-responsive-devices">
+                <div class="dev-mon"></div>
+                <div class="dev-mob"></div>
+              </div>
             </div>
-            <div class="card-text">
-              <span class="card-title">Responsive</span>
-              <span class="card-desc">Multi Device</span>
-            </div>
+            <span class="card-title">Responsive</span>
+            <span class="card-shortcut">⌘3</span>
           </div>
         </div>
       </section>
@@ -155,6 +156,17 @@
           </div>
         </div>
       </div>
+
+      <!-- RECENT CAPTURES -->
+      <section id="recent-section" class="recent-container">
+        <div class="section-header">
+          <div class="section-header-flex">
+            <span class="section-label">Recent Captures</span>
+            <button id="btn-clear-history" class="btn-clear-link" title="Clear all recent captures">Clear All</button>
+          </div>
+        </div>
+        <div id="recent-list" class="recent-list"></div>
+      </section>
 
     </div><!-- /.popup-body -->
 
