@@ -81,11 +81,20 @@ async function handleCapture(type, tabId, optsOverride = {}) {
     raw = await captureVisible(tabId);
   }
 
+  let hostname = 'localhost';
+  try {
+    if (meta.url && (meta.url.startsWith('http://') || meta.url.startsWith('https://'))) {
+      hostname = new URL(meta.url).hostname;
+    } else if (meta.url) {
+      hostname = meta.url;
+    }
+  } catch (e) {}
+
   const framedDataUrl = await applyFrame(raw.dataUrl || raw, options.frameStyle, {
     background: options.background,
     quality: options.quality,
     format: options.format,
-    url: new URL(meta.url || 'http://localhost').hostname
+    url: hostname
   });
 
   const captureRecord = {
