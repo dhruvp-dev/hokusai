@@ -225,18 +225,18 @@ html, body {
   width: 18px;
   height: 18px;
   border-radius: 4px;
-  background: var(--text-main);
+  background: #4f86f7;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--bg-surface);
+  color: #ffffff;
   flex-shrink: 0;
 }
 
 .card-checkbox svg {
   width: 12px;
   height: 12px;
-  stroke: var(--bg-surface);
+  stroke: #ffffff;
   stroke-width: 3;
 }
 

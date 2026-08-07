@@ -475,16 +475,18 @@ header {
 .preset-card:hover {
   border-color: var(--accent);
   background: var(--bg-hover);
+  transform: translateY(-1px);
 }
 
 .preset-card.active {
-  border-color: var(--accent);
-  background: rgba(59, 130, 246, 0.1);
+  border: 2px solid var(--accent);
+  background: rgba(59, 130, 246, 0.15);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.25);
 }
 
 .preset-card.active .preset-label {
   color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .preset-swatch {

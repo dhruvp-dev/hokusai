@@ -39,9 +39,9 @@ export async function canvasToDataUrl(canvas, format = 'webp', quality = 0.9) {
   return canvas.toDataURL(mimeType, quality);
 }
 
-export function drawBackground(ctx, width, height, bg = '#0f0f14') {
+export function drawBackground(ctx, width, height, bg = 'dark') {
   ctx.save();
-  const lowerBg = (bg || '').toLowerCase();
+  const lowerBg = (bg || '').trim().toLowerCase();
 
   if (lowerBg === 'hyper') {
     const grad = ctx.createLinearGradient(0, 0, width, height);
@@ -63,6 +63,8 @@ export function drawBackground(ctx, width, height, bg = '#0f0f14') {
     grad.addColorStop(0, '#181824');
     grad.addColorStop(1, '#2e2a4a');
     ctx.fillStyle = grad;
+  } else if (lowerBg === 'dark' || lowerBg === '#0f0f14') {
+    ctx.fillStyle = '#0f0f14';
   } else {
     ctx.fillStyle = bg || '#0f0f14';
   }

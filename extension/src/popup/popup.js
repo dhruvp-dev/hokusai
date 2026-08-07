@@ -103,6 +103,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       const style = card.getAttribute('data-style');
       setState({ frameStyle: style });
       await settings.set({ frameStyle: style });
+
+      if (getState().lastCapture?.dataUrl) {
+        executeCapture(selectedMode);
+      }
     });
   });
 
@@ -112,6 +116,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       const preset = e.currentTarget.getAttribute('data-bg');
       setState({ background: preset });
       await settings.set({ background: preset });
+
+      if (getState().lastCapture?.dataUrl) {
+        executeCapture(selectedMode);
+      }
     });
   });
 
@@ -121,6 +129,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       const format = e.target.getAttribute('data-format');
       setState({ format });
       await settings.set({ format });
+
+      if (getState().lastCapture?.dataUrl) {
+        executeCapture(selectedMode);
+      }
     });
   });
 
