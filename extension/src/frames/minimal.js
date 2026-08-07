@@ -8,9 +8,9 @@ export async function renderMinimal(dataUrl, opts = {}) {
   const imgH = img.height;
 
   const bg = opts.background || '#0f0f14';
-  const quality = opts.quality || 90;
+  const quality = Number(opts.quality) || 90;
   const format = opts.format || 'webp';
-  const paddingVal = typeof opts.padding === 'number' ? opts.padding : 40;
+  const paddingVal = Number(opts.padding) || 40;
 
   const dims = cardDimensions(imgW, imgH, 0, paddingVal);
   const { cardWidth, cardHeight, canvasWidth, canvasHeight, padding } = dims;
