@@ -50,12 +50,76 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 
   if (msg.type === 'DOWNLOAD') {
-    browser.downloads.download({
-      url: msg.dataUrl,
-      filename: msg.filename || `hokusai-${Date.now()}.${msg.format || 'webp'}`,
-      saveAs: true
-    }).then(id => sendResponse({ success: true, id }))
-      .catch(err => sendResponse({ success: false, error: err.message }));
+    (async () => {
+      try {
+        const dlApi = (typeof browser !== 'undefined' && browser.downloads) 
+          ? browser.downloads 
+          : (typeof chrome !== 'undefined' && chrome.downloads) 
+            ? chrome.downloads 
+            : null;
+
+        const filename = (msg.filename || `hokusai-${Date.now()}.${msg.format || 'webp'}`).replace(/[^a-zA-Z0-9.\-_]/g, '_');
+        let downloadUrl = msg.dataUrl;
+        let isBlobUrl = false;
+
+        // Convert base64 dataUrl to Blob URL in background page scope
+        if (msg.dataUrl && msg.dataUrl.startsWith('data:')) {
+          try {
+            const blob = dataURLtoBlob(msg.dataUrl);
+            if (blob) {
+              downloadUrl = URL.createObjectURL(blob);
+              isBlobUrl = true;
+            }
+          } catch (blobErr) {
+            console.warn('Failed to convert dataUrl to blob, using raw dataUrl:', blobErr);
+          }
+        }
+
+        if (dlApi) {
+          let downloadId;
+          try {
+            // Attempt with saveAs dialog prompt
+            downloadId = await dlApi.download({
+              url: downloadUrl,
+              filename: filename,
+              saveAs: true
+            });
+          } catch (e) {
+            console.warn('saveAs prompt failed, retrying with direct save:', e);
+            downloadId = await dlApi.download({
+              url: downloadUrl,
+              filename: filename,
+              saveAs: false
+            });
+          }
+
+          if (isBlobUrl) {
+            setTimeout(() => URL.revokeObjectURL(downloadUrl), 20000);
+          }
+
+          sendResponse({ success: true, id: downloadId });
+          return;
+        }
+
+        throw new Error('downloads API not available');
+      } catch (err) {
+        console.error('Background download execution error:', err);
+
+        // Failsafe Fallback: Open image in new tab if direct download API fails
+        try {
+          const tabApi = (typeof browser !== 'undefined' && browser.tabs) ? browser.tabs : (typeof chrome !== 'undefined' ? chrome.tabs : null);
+          if (tabApi) {
+            await tabApi.create({ url: msg.dataUrl });
+            sendResponse({ success: true, fallback: 'tab_opened' });
+            return;
+          }
+        } catch (tabErr) {
+          console.error('Tab fallback failed:', tabErr);
+        }
+
+        sendResponse({ success: false, error: err?.message || String(err) });
+      }
+    })();
     return true;
   }
 });
@@ -109,3 +173,17 @@ async function handleCapture(type, tabId, optsOverride = {}) {
   await history.add(captureRecord);
   return captureRecord;
 }
+
+function dataURLtoBlob(dataurl) {
+  const parts = dataurl.split(';base64,');
+  if (parts.length < 2) return null;
+  const mime = parts[0].split(':')[1];
+  const bstr = atob(parts[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
+}
+

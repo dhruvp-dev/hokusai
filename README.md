@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="hokusai-icon.svg" width="128" height="128" alt="Hokusai Logo">
+</p>
+
 # Hokusai
 
 > **Beautiful website screenshots. Zero configuration.**

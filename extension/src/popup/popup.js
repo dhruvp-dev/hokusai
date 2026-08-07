@@ -16,17 +16,45 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 3. Bind Event Handlers
   bindSettingsControls();
 
-  // Quick Action Buttons
-  document.getElementById('act-visible')?.addEventListener('click', () => executeCapture('CAPTURE_VISIBLE'));
-  document.getElementById('act-fullpage')?.addEventListener('click', () => executeCapture('CAPTURE_FULLPAGE'));
-  document.getElementById('act-responsive')?.addEventListener('click', () => executeCapture('CAPTURE_RESPONSIVE'));
+  // Checkbox option selection for capture types
+  let selectedMode = 'CAPTURE_VISIBLE';
+  
+  const captureCards = [
+    { id: 'act-visible', mode: 'CAPTURE_VISIBLE' },
+    { id: 'act-fullpage', mode: 'CAPTURE_FULLPAGE' },
+    { id: 'act-responsive', mode: 'CAPTURE_RESPONSIVE' }
+  ];
 
-  // Frame Chips
-  document.querySelectorAll('#frame-chips .chip').forEach(chip => {
+  captureCards.forEach(item => {
+    const el = document.getElementById(item.id);
+    if (!el) return;
+    el.addEventListener('click', () => {
+      captureCards.forEach(c => {
+        const cardEl = document.getElementById(c.id);
+        if (cardEl) cardEl.classList.add('unchecked');
+      });
+      el.classList.remove('unchecked');
+      selectedMode = item.mode;
+    });
+  });
+
+  // Submit button triggers capture
+  document.getElementById('btn-submit-capture')?.addEventListener('click', () => {
+    executeCapture(selectedMode);
+  });
+
+  // Cancel button closes popup window
+  document.getElementById('btn-cancel-popup')?.addEventListener('click', () => {
+    window.close();
+  });
+
+  // Frame Cards
+  document.querySelectorAll('#frame-chips .frame-card').forEach(chip => {
     chip.addEventListener('click', async (e) => {
-      const style = e.target.getAttribute('data-style');
-      document.querySelectorAll('#frame-chips .chip').forEach(c => c.classList.remove('active'));
-      e.target.classList.add('active');
+      const card = e.currentTarget;
+      const style = card.getAttribute('data-style');
+      document.querySelectorAll('#frame-chips .frame-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
       setState({ frameStyle: style });
       await settings.set({ frameStyle: style });
     });
@@ -42,6 +70,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       await settings.set({ format });
     });
   });
+
+
 
   // Copy & Download
   document.getElementById('btn-copy')?.addEventListener('click', async () => {
@@ -60,7 +90,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('btn-download')?.addEventListener('click', async () => {
     const { lastCapture, format } = getState();
     if (lastCapture?.dataUrl) {
-      await triggerDownload(lastCapture.dataUrl, format);
+      const dlBtn = document.getElementById('btn-download');
+      const origHtml = dlBtn ? dlBtn.innerHTML : '';
+      if (dlBtn) dlBtn.innerText = 'Downloading...';
+      const success = await triggerDownload(lastCapture.dataUrl, format || lastCapture.format || 'webp');
+      if (dlBtn) {
+        dlBtn.innerText = success ? 'Downloaded!' : 'Failed';
+        setTimeout(() => { dlBtn.innerHTML = origHtml; }, 1500);
+      }
     }
   });
 
@@ -82,7 +119,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // Initial History Load
+  // Initial History Load & Sync Latest Capture
   const recentList = await history.get();
   renderRecentCaptures(document.getElementById('recent-list'), recentList);
+  if (recentList && recentList.length > 0) {
+    setState({ lastCapture: recentList[0] });
+  }
 });

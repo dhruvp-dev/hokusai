@@ -1,0 +1,208 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Squircle Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090D16" />
+      <stop offset="40%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#1E1B4B" />
+    </linearGradient>
+
+    <!-- Border Glow Gradient -->
+    <linearGradient id="border-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#818CF8" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#F43F5E" stop-opacity="0.7" />
+    </linearGradient>
+
+    <!-- Rising Sun / Shutter Aperture Gradient -->
+    <linearGradient id="sun-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF4D4D" />
+      <stop offset="60%" stop-color="#F97316" />
+      <stop offset="100%" stop-color="#FBBF24" />
+    </linearGradient>
+
+    <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF4D4D" stop-opacity="0.45" />
+      <stop offset="70%" stop-color="#F97316" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#F97316" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Deep Wave Layer Gradient -->
+    <linearGradient id="wave-back-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1D4ED8" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+
+    <!-- Mid Wave Layer Gradient -->
+    <linearGradient id="wave-mid-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0369A1" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+
+    <!-- Main Front Wave Gradient (Vivid Electric Cyan) -->
+    <linearGradient id="wave-main-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284C7" />
+      <stop offset="40%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#22D3EE" />
+    </linearGradient>
+
+    <!-- Wave Foam Gradient -->
+    <linearGradient id="foam-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#E0F2FE" />
+    </linearGradient>
+
+    <!-- Glassmorphic Canvas Card Gradient -->
+    <linearGradient id="card-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95" />
+    </linearGradient>
+
+    <!-- Card Clip Path for Perfectly Rounded Inner Contents -->
+    <clipPath id="card-clip">
+      <rect x="64" y="68" width="384" height="376" rx="24" />
+    </clipPath>
+
+    <!-- Drop Shadows -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
+  </defs>
+
+  <!-- Main Squircle Outer Shell -->
+  <rect x="16" y="16" width="480" height="480" rx="108" fill="url(#bg-grad)" stroke="url(#border-grad)" stroke-width="3" />
+
+  <!-- Subtle Inner Specular Rim Glow -->
+  <rect x="19" y="19" width="474" height="474" rx="105" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="1.5" />
+
+  <!-- Framed Device/Browser Canvas Window (Center Piece) -->
+  <g filter="url(#shadow)">
+    <!-- Main Card Body Base -->
+    <rect x="64" y="68" width="384" height="376" rx="24" fill="url(#card-grad)" stroke="#334155" stroke-width="2" />
+
+    <!-- CLIPPED CARD CONTENTS (Sun, Grid, Wave) -->
+    <g clip-path="url(#card-clip)">
+      <!-- Rising Sun / Camera Shutter Ring (The Hokusai Sun Motif) -->
+      <g>
+        <!-- Sun Soft Glow -->
+        <circle cx="340" cy="210" r="95" fill="url(#sun-glow)" />
+        <!-- Sun Core Circle -->
+        <circle cx="340" cy="210" r="64" fill="url(#sun-grad)" />
+        <!-- Camera Shutter Ring Details -->
+        <circle cx="340" cy="210" r="78" fill="none" stroke="#FBBF24" stroke-width="1.5" stroke-dasharray="5 7" opacity="0.7" />
+        <circle cx="340" cy="210" r="86" fill="none" stroke="#FF4D4D" stroke-width="1" stroke-dasharray="2 10" opacity="0.5" />
+      </g>
+
+      <!-- Grid Viewport Lines (Screenshot Framing Guides) -->
+      <g opacity="0.12">
+        <line x1="144" y1="118" x2="144" y2="444" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="4 4" />
+        <line x1="368" y1="118" x2="368" y2="444" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="4 4" />
+        <line x1="64" y1="260" x2="448" y2="260" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="4 4" />
+      </g>
+
+      <!-- THE GREAT WAVE OF HOKUSAI (Multi-layered Wave Geometry) -->
+      <g id="hokusai-wave-group">
+        <!-- Back Wave Layer (Deep Sapphire) -->
+        <path d="M 64,448 
+                 L 64,330 
+                 C 110,320 150,270 200,230 
+                 C 250,190 310,200 360,250 
+                 C 400,290 420,330 448,350 
+                 L 448,448 Z" 
+              fill="url(#wave-back-grad)" opacity="0.6" />
+
+        <!-- Middle Wave Layer (Mid Blue) -->
+        <path d="M 64,448 
+                 L 64,290 
+                 C 110,285 140,320 190,320 
+                 C 250,320 285,245 335,215 
+                 C 385,185 415,220 448,245 
+                 L 448,448 Z" 
+              fill="url(#wave-mid-grad)" opacity="0.85" />
+
+        <!-- Main Front Dynamic Wave Curve -->
+        <path d="M 64,448 
+                 L 64,360 
+                 C 100,360 135,370 175,348 
+                 C 225,320 245,285 285,255 
+                 C 325,225 365,165 345,135 
+                 C 330,112 298,120 278,142 
+                 C 258,164 248,190 220,212 
+                 C 180,245 125,225 64,265 
+                 Z" 
+              fill="url(#wave-main-grad)" />
+
+        <!-- Wave Crest Foam & Claw Elements -->
+        <path d="M 345,135 
+                 C 325,120 295,125 278,142 
+                 C 268,153 262,168 245,185 
+                 C 235,195 220,205 200,215 
+                 C 230,205 255,185 278,158 
+                 C 298,132 328,125 345,135 Z" 
+              fill="url(#foam-grad)" />
+
+        <!-- Top Wave Claw Strokes -->
+        <path d="M 345,135 C 335,115 305,110 288,125 C 278,134 282,148 298,144 C 312,140 328,150 332,160" 
+              fill="none" stroke="url(#foam-grad)" stroke-width="4.5" stroke-linecap="round" />
+
+        <path d="M 315,130 C 300,110 275,115 262,130 C 255,140 260,150 272,146" 
+              fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+
+        <!-- Foam Droplets / Ocean Spray Particles -->
+        <circle cx="268" cy="118" r="5.5" fill="#FFFFFF" />
+        <circle cx="250" cy="132" r="4" fill="#E0F2FE" />
+        <circle cx="234" cy="148" r="4.5" fill="#FFFFFF" />
+        <circle cx="282" cy="106" r="6" fill="#FFFFFF" />
+        <circle cx="304" cy="98" r="4" fill="#BAE6FD" />
+        <circle cx="326" cy="104" r="5" fill="#FFFFFF" />
+        <circle cx="355" cy="118" r="3.5" fill="#E0F2FE" />
+        <circle cx="218" cy="170" r="4" fill="#FFFFFF" />
+        <circle cx="198" cy="190" r="3.5" fill="#BAE6FD" />
+        <circle cx="178" cy="208" r="3" fill="#E0F2FE" />
+
+        <!-- Swirl & Water Flow Highlight Lines -->
+        <path d="M 120,365 C 160,355 200,325 235,285 C 270,245 305,195 295,165" 
+              fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.65" />
+        <path d="M 150,372 C 190,362 225,337 255,302 C 285,267 315,227 310,197" 
+              fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" opacity="0.5" />
+        <path d="M 90,360 C 120,355 150,335 180,310 C 210,285 230,250 250,230" 
+              fill="none" stroke="#E0F2FE" stroke-width="1.5" stroke-linecap="round" opacity="0.4" />
+      </g>
+    </g>
+
+    <!-- Arc-Style Chrome Top Header Bar (Layered above card content) -->
+    <path d="M 64,92 A 24,24 0 0,1 88,68 L 424,68 A 24,24 0 0,1 448,92 L 448,118 L 64,118 Z" fill="#0F172A" opacity="0.9" />
+    <line x1="64" y1="118" x2="448" y2="118" stroke="#334155" stroke-width="1.5" />
+
+    <!-- Window Dots -->
+    <circle cx="96" cy="93" r="6" fill="#EF4444" opacity="0.95" />
+    <circle cx="116" cy="93" r="6" fill="#F59E0B" opacity="0.95" />
+    <circle cx="136" cy="93" r="6" fill="#10B981" opacity="0.95" />
+
+    <!-- Address Bar Pill -->
+    <rect x="160" y="83" width="192" height="20" rx="10" fill="#1E293B" stroke="#475569" stroke-width="1" opacity="0.8" />
+    <!-- Lock Icon in URL Bar -->
+    <path d="M 173,92 L 177,92 L 177,90 A 2,2 0 0,0 173,90 Z" fill="none" stroke="#38BDF8" stroke-width="1.5" />
+    <rect x="172" y="92" width="6" height="5" rx="1" fill="#38BDF8" />
+    <!-- URL Text Placeholder -->
+    <line x1="184" y1="93" x2="248" y2="93" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" opacity="0.7" />
+  </g>
+
+  <!-- Viewfinder Frame Corner Brackets (Screenshot Target Bounds) -->
+  <g stroke="#38BDF8" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.9">
+    <!-- Top-Left Bracket -->
+    <path d="M 96,156 L 96,138 L 114,138" />
+    <!-- Top-Right Bracket -->
+    <path d="M 398,138 L 416,138 L 416,156" />
+    <!-- Bottom-Left Bracket -->
+    <path d="M 96,368 L 96,386 L 114,386" />
+    <!-- Bottom-Right Bracket -->
+    <path d="M 398,386 L 416,386 L 416,368" />
+  </g>
+
+  <!-- Shutter Flash / Camera Lens Sparkle (Top Right Accent) -->
+  <g transform="translate(396, 148)">
+    <path d="M 0,-11 L 0,11 M -11,0 L 11,0 M -7,-7 L 7,7 M -7,7 L 7,-7" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity="0.95" />
+    <circle cx="0" cy="0" r="3.5" fill="#38BDF8" />
+  </g>
+</svg>
