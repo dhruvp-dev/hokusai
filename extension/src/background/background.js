@@ -29,14 +29,24 @@ browser.commands.onCommand.addListener(async (command) => {
   }
 });
 
-// Message Routing
 browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type?.startsWith('CAPTURE_')) {
-    const tabId = msg.tabId || sender.tab?.id;
-    handleCapture(msg.type, tabId, msg.options)
-      .then(result => sendResponse({ success: true, result }))
-      .catch(err => sendResponse({ success: false, error: err.message }));
-    return true; // Async response
+    (async () => {
+      try {
+        let tabId = msg.tabId || sender.tab?.id;
+        if (!tabId) {
+          const tabs = await browser.tabs.query({ active: true, currentWindow: true });
+          tabId = tabs[0]?.id;
+        }
+        if (!tabId) throw new Error('No active tab found');
+        const result = await handleCapture(msg.type, tabId, msg.options);
+        sendResponse({ success: true, result });
+      } catch (err) {
+        console.error('Hokusai capture error:', err);
+        sendResponse({ success: false, error: err.message });
+      }
+    })();
+    return true; // Keep channel open for async response
   }
 
   if (msg.type === 'DOWNLOAD') {

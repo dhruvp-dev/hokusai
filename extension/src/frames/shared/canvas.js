@@ -9,15 +9,19 @@ export function createCanvas(width, height) {
 }
 
 export async function loadImage(dataUrl) {
-  if (typeof createImageBitmap !== 'undefined') {
-    const res = await fetch(dataUrl);
-    const blob = await res.blob();
-    return await createImageBitmap(blob);
+  if (typeof createImageBitmap !== 'undefined' && typeof fetch !== 'undefined') {
+    try {
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+      return await createImageBitmap(blob);
+    } catch (e) {
+      // Fallback if fetch fails for dataUrl
+    }
   }
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);
-    img.onerror = reject;
+    img.onerror = (err) => reject(new Error('Failed to load image element'));
     img.src = dataUrl;
   });
 }
