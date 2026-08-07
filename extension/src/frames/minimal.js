@@ -1,4 +1,4 @@
-import { createCanvas, loadImage, canvasToDataUrl } from './shared/canvas.js';
+import { createCanvas, loadImage, canvasToDataUrl, drawBackground } from './shared/canvas.js';
 import { cardDimensions, roundRect } from './shared/geometry.js';
 import { drawShadow } from './shared/shadow.js';
 
@@ -10,16 +10,16 @@ export async function renderMinimal(dataUrl, opts = {}) {
   const bg = opts.background || '#0f0f14';
   const quality = opts.quality || 90;
   const format = opts.format || 'webp';
+  const paddingVal = typeof opts.padding === 'number' ? opts.padding : 40;
 
-  const dims = cardDimensions(imgW, imgH, 0, 40);
+  const dims = cardDimensions(imgW, imgH, 0, paddingVal);
   const { cardWidth, cardHeight, canvasWidth, canvasHeight, padding } = dims;
 
   const canvas = createCanvas(canvasWidth, canvasHeight);
   const ctx = canvas.getContext('2d');
 
   // Backdrop
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+  drawBackground(ctx, canvasWidth, canvasHeight, bg);
 
   // Soft shadow
   drawShadow(ctx, {

@@ -60,6 +60,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
+  // Background Preset Cards
+  document.querySelectorAll('#bg-presets .preset-card').forEach(card => {
+    card.addEventListener('click', async (e) => {
+      const preset = e.currentTarget.getAttribute('data-bg');
+      document.querySelectorAll('#bg-presets .preset-card').forEach(c => c.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      setState({ background: preset });
+      await settings.set({ background: preset });
+    });
+  });
+
   // Format Chips
   document.querySelectorAll('#format-chips .chip').forEach(chip => {
     chip.addEventListener('click', async (e) => {
@@ -104,6 +115,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 4. Subscribe State Changes
   subscribe(state => {
     updateThemeUI(state.theme);
+
+    // Sync Background Preset active class
+    if (state.background) {
+      document.querySelectorAll('#bg-presets .preset-card').forEach(card => {
+        if (card.getAttribute('data-bg') === state.background) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      });
+    }
+
+    // Sync Padding slider & badge
+    if (state.padding) {
+      const slider = document.getElementById('input-padding');
+      const badge = document.getElementById('padding-val-badge');
+      if (slider) slider.value = state.padding;
+      if (badge) badge.textContent = `${state.padding}px`;
+    }
 
     // Update preview if capture exists
     const previewSection = document.getElementById('preview-section');

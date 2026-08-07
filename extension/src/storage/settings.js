@@ -3,6 +3,7 @@ const DEFAULTS = {
   format: 'webp',
   quality: 90,
   background: '#0f0f14',
+  padding: 40,
   autoCopy: false,
   autoDownload: false,
   theme: 'dark',

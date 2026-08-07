@@ -87,6 +87,48 @@
         </div>
       </section>
 
+      <!-- BACKGROUND PRESETS -->
+      <section>
+        <div class="section-header">
+          <span class="section-label">Background Preset</span>
+        </div>
+        <div class="preset-grid" id="bg-presets">
+          <div class="preset-card active" data-bg="#0f0f14">
+            <span class="preset-swatch swatch-dark"></span>
+            <span class="preset-label">Dark</span>
+          </div>
+          <div class="preset-card" data-bg="hyper">
+            <span class="preset-swatch swatch-hyper"></span>
+            <span class="preset-label">Hyper</span>
+          </div>
+          <div class="preset-card" data-bg="midnight">
+            <span class="preset-swatch swatch-midnight"></span>
+            <span class="preset-label">Midnight</span>
+          </div>
+          <div class="preset-card" data-bg="sunset">
+            <span class="preset-swatch swatch-sunset"></span>
+            <span class="preset-label">Sunset</span>
+          </div>
+          <div class="preset-card" data-bg="glass">
+            <span class="preset-swatch swatch-glass"></span>
+            <span class="preset-label">Glass</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CANVAS PADDING -->
+      <section>
+        <div class="section-header">
+          <div class="section-header-flex">
+            <span class="section-label">Canvas Padding</span>
+            <span id="padding-val-badge" class="badge-val">40px</span>
+          </div>
+        </div>
+        <div class="slider-row">
+          <input type="range" id="input-padding" min="16" max="96" step="4" value="40" class="range-slider">
+        </div>
+      </section>
+
       <!-- FORMAT -->
       <section>
         <div class="section-header">
@@ -125,6 +167,39 @@
     </div>
 
   </div><!-- /.modal-card -->
+
+  <!-- SETTINGS DRAWER OVERLAY -->
+  <div id="settings-drawer" class="drawer-overlay hidden">
+    <div class="drawer-card">
+      <div class="drawer-header">
+        <span class="drawer-title">Extension Settings</span>
+        <button id="btn-close-settings" class="icon-btn" title="Close Settings">&times;</button>
+      </div>
+      <div class="drawer-body">
+        <div class="setting-item">
+          <label class="setting-label">Default Format</label>
+          <select id="setting-default-format" class="select-input">
+            <option value="webp">WebP (Optimized)</option>
+            <option value="png">PNG (Lossless)</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <div class="setting-label-row">
+            <label class="setting-label">Image Quality</label>
+            <span id="quality-val-badge" class="badge-val">90%</span>
+          </div>
+          <input type="range" id="setting-quality" min="50" max="100" step="5" value="90" class="range-slider">
+        </div>
+        <div class="setting-item">
+          <div class="setting-label-row">
+            <label class="setting-label">Canvas Padding</label>
+            <span id="drawer-padding-val-badge" class="badge-val">40px</span>
+          </div>
+          <input type="range" id="setting-padding" min="16" max="96" step="4" value="40" class="range-slider">
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="popup.bundle.js"></script>
 </body>

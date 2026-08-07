@@ -395,7 +395,7 @@ html, body {
   justify-content: center;
   gap: 8px;
   padding: 12px 20px;
-  background: linear-gradient(135deg, #4f86f7 0%, #5b66f6 100%);
+  background: #4f86f7;
   color: #ffffff;
   border: none;
   border-radius: 6px;
@@ -408,7 +408,7 @@ html, body {
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #3d78f6 0%, #4a56f5 100%);
+  background: #3d78f6;
   box-shadow: none;
   transform: translateY(-1px);
 }

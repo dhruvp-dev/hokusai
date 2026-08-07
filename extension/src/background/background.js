@@ -156,6 +156,7 @@ async function handleCapture(type, tabId, optsOverride = {}) {
 
   const framedDataUrl = await applyFrame(raw.dataUrl || raw, options.frameStyle, {
     background: options.background,
+    padding: options.padding,
     quality: options.quality,
     format: options.format,
     url: hostname

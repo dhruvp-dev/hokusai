@@ -10,6 +10,9 @@ export async function executeCapture(type, deviceKey = 'desktop') {
       options: {
         frameStyle: current.frameStyle,
         format: current.format,
+        background: current.background,
+        padding: current.padding,
+        quality: current.quality,
         device: deviceKey
       }
     });

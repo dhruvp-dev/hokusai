@@ -38,3 +38,36 @@ export async function canvasToDataUrl(canvas, format = 'webp', quality = 0.9) {
   }
   return canvas.toDataURL(mimeType, quality);
 }
+
+export function drawBackground(ctx, width, height, bg = '#0f0f14') {
+  ctx.save();
+  const lowerBg = (bg || '').toLowerCase();
+
+  if (lowerBg === 'hyper') {
+    const grad = ctx.createLinearGradient(0, 0, width, height);
+    grad.addColorStop(0, '#ec4899');
+    grad.addColorStop(1, '#8b5cf6');
+    ctx.fillStyle = grad;
+  } else if (lowerBg === 'midnight') {
+    const grad = ctx.createLinearGradient(0, 0, width, height);
+    grad.addColorStop(0, '#0f172a');
+    grad.addColorStop(1, '#1e1b4b');
+    ctx.fillStyle = grad;
+  } else if (lowerBg === 'sunset') {
+    const grad = ctx.createLinearGradient(0, 0, width, height);
+    grad.addColorStop(0, '#f97316');
+    grad.addColorStop(1, '#d946ef');
+    ctx.fillStyle = grad;
+  } else if (lowerBg === 'glass') {
+    const grad = ctx.createLinearGradient(0, 0, width, height);
+    grad.addColorStop(0, '#181824');
+    grad.addColorStop(1, '#2e2a4a');
+    ctx.fillStyle = grad;
+  } else {
+    ctx.fillStyle = bg || '#0f0f14';
+  }
+
+  ctx.fillRect(0, 0, width, height);
+  ctx.restore();
+}
+
