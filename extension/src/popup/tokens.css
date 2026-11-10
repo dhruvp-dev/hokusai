@@ -1,0 +1,79 @@
+:root {
+  /* ── Reference UI Palette ───────────────────── */
+  --c-bg:        #f3f3f5;
+  --c-surface:   #ffffff;
+  --c-surface-2: #f6f6f7;
+  --c-surface-3: #eeeeef;
+  --c-border:    #e4e4e7;
+  --c-border-md: #d4d4d8;
+
+  --c-ink:       #18181b;
+  --c-ink-2:     #3f3f46;
+  --c-ink-3:     #71717a;
+  --c-ink-4:     #a1a1aa;
+
+  --c-accent:    #4f86f7;   /* signature blue */
+  --c-accent-2:  #3d78f6;
+  --c-accent-bg: rgba(79, 134, 247, 0.1);
+  --c-accent-border: #4f86f7;
+
+  /* ── Semantic Aliases ───────────────────────── */
+  --bg-base:     var(--c-bg);
+  --bg-surface:  var(--c-surface);
+  --bg-hover:    var(--c-surface-2);
+  --text-main:   var(--c-ink);
+  --text-2:      var(--c-ink-2);
+  --text-muted:  var(--c-ink-3);
+  --text-faint:  var(--c-ink-4);
+  --border:      var(--c-border);
+  --accent:      var(--c-accent);
+  --accent-hover: var(--c-accent-2);
+
+  /* ── Geometry ───────────────────────────────── */
+  --r-xs:   4px;
+  --r-sm:   6px;
+  --r-md:   8px;
+  --r-lg:   20px;
+  --r-pill: 9999px;
+
+  /* ── Elevation ──────────────────────────────── */
+  --shadow-xs: none;
+  --shadow-sm: 0 4px 20px rgba(0,0,0,0.06);
+  --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+  --shadow-accent: none;
+
+  /* ── Motion ─────────────────────────────────── */
+  --dur-fast: 120ms;
+  --dur: 180ms;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── Typography ─────────────────────────────── */
+  --font: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --popup-width: 388px;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --c-bg:        #09090b;
+  --c-surface:   #18181b;
+  --c-surface-2: #27272a;
+  --c-surface-3: #3f3f46;
+  --c-border:    #27272a;
+  --c-border-md: #3f3f46;
+
+  --c-ink:       #f4f4f5;
+  --c-ink-2:     #e4e4e7;
+  --c-ink-3:     #a1a1aa;
+  --c-ink-4:     #71717a;
+
+  --c-accent:    #4f86f7;
+  --c-accent-2:  #3d78f6;
+  --c-accent-bg: rgba(79, 134, 247, 0.15);
+  --c-accent-border: #4f86f7;
+
+  --shadow-xs: none;
+  --shadow-sm: 0 4px 20px rgba(0,0,0,0.4);
+  --shadow-md: 0 10px 30px rgba(0,0,0,0.6);
+  --shadow-accent: none;
+}
+

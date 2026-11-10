@@ -1,0 +1,14 @@
+{
+  "name": "hokusai-extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.js",
+    "watch": "node build.js --watch",
+    "package": "node build.js && (cd dist && zip -rq ../hokusai-extension.zip .)"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.0"
+  }
+}

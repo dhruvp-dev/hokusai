@@ -4,13 +4,15 @@ import path from 'path';
 import { parseArgs } from 'node:util';
 import { chromium } from 'playwright';
 import defaultConfig, { applyCliOverrides } from '../config.js';
-import { discover } from '../engine/discover/index.js';
+import { discover, detectSiteProvider } from '../engine/discover/index.js';
 import { normalize } from '../engine/discover/normalize.js';
 import { capture } from '../engine/capture/index.js';
 import { applyFrames } from '../engine/frame/index.js';
 import OutputManager from '../engine/frame/output.js';
 import Reporter from '../engine/report/index.js';
 import HtmlProvider from '../providers/html/index.js';
+import ViteProvider from '../providers/vite/index.js';
+import NextProvider from '../providers/next/index.js';
 import UrlProvider from '../providers/url/index.js';
 import { parseAndNormalizeUrl, slugFromUrl } from '../utils/url.js';
 import Site from '../models/Site.js';
@@ -32,6 +34,8 @@ Options:
                                       Example: -b "#ffffff" or -b "rgba(0,0,0,0.5)"
   -p, --padding <number>              Override padding size in pixels.
                                       Example: -p 60
+  -d, --delay <number>                Wait duration in milliseconds after page load before capture.
+                                      Example: -d 1000
   --no-frame                          Disable device frames entirely.
   -h, --help                          Show this help message.
 
@@ -55,6 +59,8 @@ async function main() {
         viewport: { type: 'string', short: 'v', multiple: true },
         background: { type: 'string', short: 'b' },
         padding: { type: 'string', short: 'p' },
+        delay: { type: 'string', short: 'd' },
+        'wait-after-load': { type: 'string' },
         frame: { type: 'boolean', default: true },
         'no-frame': { type: 'boolean' },
         help: { type: 'boolean', short: 'h' },
@@ -91,8 +97,9 @@ async function main() {
   if (targetArg || !hasUrlOption) {
     const sitePaths = await discover(targetDir, config.exclude);
     for (const sitePath of sitePaths) {
+      const providerType = detectSiteProvider(sitePath);
       const { slug, displayName } = normalize(sitePath, targetDir);
-      sites.push(new Site({ slug, displayName, absolutePath: sitePath }));
+      sites.push(new Site({ slug, displayName, absolutePath: sitePath, providerType }));
     }
   }
 
@@ -104,7 +111,7 @@ async function main() {
         const parsed = parseAndNormalizeUrl(rawUrl);
         const slug = slugFromUrl(parsed);
         const displayName = parsed.hostname + (parsed.pathname !== '/' ? parsed.pathname : '');
-        sites.push(new Site({ slug, displayName, absolutePath: parsed.href, isUrl: true }));
+        sites.push(new Site({ slug, displayName, absolutePath: parsed.href, isUrl: true, providerType: 'url' }));
       } catch (err) {
         console.error(`Error: Invalid URL '${rawUrl}' - ${err.message}`);
         process.exit(1);
@@ -116,7 +123,7 @@ async function main() {
   reporter.start(sites.length);
 
   if (sites.length === 0) {
-    console.log('No websites containing index.html or target URLs were found.');
+    console.log('No websites or target URLs were found.');
     return;
   }
 
@@ -138,8 +145,18 @@ async function main() {
     let page = null;
 
     try {
-      // Prepare site source (local static server or live URL)
-      const provider = site.isUrl ? new UrlProvider() : new HtmlProvider();
+      // Prepare site source (local static server, Vite, Next.js, or live URL)
+      let provider;
+      if (site.isUrl) {
+        provider = new UrlProvider();
+      } else if (site.providerType === 'vite') {
+        provider = new ViteProvider();
+      } else if (site.providerType === 'next') {
+        provider = new NextProvider();
+      } else {
+        provider = new HtmlProvider();
+      }
+
       site.provider = provider;
       providerResult = await provider.prepare(site.absolutePath);
       site.url = providerResult.url;

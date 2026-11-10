@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hokusai — Capture Mode Selection Design Lab</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap">
+  <style>
+    :root {
+      --font: 'Public Sans', -apple-system, sans-serif;
+      --bg: #09090b;
+      --surface: #141417;
+      --surface-2: #1c1c21;
+      --surface-3: #26262d;
+      --border: #27272a;
+      --ink: #f4f4f5;
+      --ink-muted: #a1a1aa;
+      --accent: #4f86f7;
+      --accent-bg: rgba(79, 134, 247, 0.12);
+      --accent-border: rgba(79, 134, 247, 0.35);
+      --r-md: 10px;
+      --r-lg: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font); -webkit-font-smoothing: antialiased; }
+    
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .header-lab {
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .header-lab h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .header-lab p {
+      font-size: 14px;
+      color: var(--ink-muted);
+    }
+
+    .concepts-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .concept-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .concept-title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .concept-num {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    .concept-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    /* ── CONCEPT 1: 3-COLUMN VISUAL WIREFRAME CARDS ────────── */
+    .c1-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .c1-card {
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 14px 10px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 180ms ease;
+      position: relative;
+      user-select: none;
+    }
+
+    .c1-card:hover {
+      border-color: var(--accent-border);
+      background: var(--surface-3);
+      transform: translateY(-1px);
+    }
+
+    .c1-card.active {
+      border-color: var(--accent);
+      background: var(--accent-bg);
+      box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+
+    .c1-wireframe {
+      width: 100%;
+      height: 48px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Visible wireframe */
+    .wf-visible-box {
+      width: 70%;
+      height: 60%;
+      background: var(--accent);
+      opacity: 0.35;
+      border: 1px solid var(--accent);
+      border-radius: 3px;
+    }
+    
+    .c1-card.active .wf-visible-box {
+      opacity: 0.9;
+    }
+
+    /* Full page wireframe */
+    .wf-fullpage-lines {
+      width: 65%;
+      height: 80%;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      justify-content: center;
+    }
+    .wf-line {
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      width: 100%;
+    }
+    .c1-card.active .wf-line {
+      background: var(--accent);
+    }
+
+    /* Responsive wireframe */
+    .wf-responsive-devices {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+    }
+    .dev-mon { width: 22px; height: 16px; border: 1.5px solid var(--ink-muted); border-radius: 2px; }
+    .dev-mob { width: 8px; height: 12px; border: 1.5px solid var(--ink-muted); border-radius: 2px; }
+    .c1-card.active .dev-mon, .c1-card.active .dev-mob { border-color: var(--accent); }
+
+    .c1-title {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .c1-badge {
+      font-size: 9.5px;
+      font-weight: 600;
+      font-family: monospace;
+      color: var(--ink-muted);
+      background: var(--surface-3);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    /* ── CONCEPT 2: SEGMENTED PILL SWITCHER WITH SUB-DETAILS ── */
+    .c2-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .c2-segmented {
+      display: flex;
+      background: var(--surface-2);
+      padding: 4px;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border);
+      gap: 4px;
+    }
+
+    .c2-pill {
+      flex: 1;
+      padding: 8px 0;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      cursor: pointer;
+      transition: all 150ms ease;
+      text-align: center;
+    }
+
+    .c2-pill.active {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(79, 134, 247, 0.3);
+    }
+
+    .c2-meta-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+
+    .c2-meta-text { color: var(--ink-muted); }
+    .c2-meta-val { font-weight: 600; color: var(--accent); }
+
+    /* ── CONCEPT 3: ACCORDION EXPANDABLE CARDS ────────────────── */
+    .c3-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .c3-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 180ms ease;
+    }
+
+    .c3-card.active {
+      border-color: var(--accent);
+      background: var(--accent-bg);
+    }
+
+    .c3-card-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .c3-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .c3-radio {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid var(--ink-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .c3-card.active .c3-radio {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .c3-card.active .c3-radio::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .c3-title { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+    .c3-desc { font-size: 11.5px; color: var(--ink-muted); }
+
+    .c3-tags {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .c3-tag {
+      font-size: 10.5px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: var(--ink-muted);
+    }
+
+    /* ── CONCEPT 4: ULTRA-CLEAN RADIAL SWITCH TILES ──────────── */
+    .c4-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .c4-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-md);
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .c4-item.active {
+      border-color: var(--accent);
+      background: var(--surface-3);
+    }
+
+    .c4-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .c4-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-muted);
+    }
+
+    .c4-item.active .c4-icon-box {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .c4-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .c4-name { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .c4-sub { font-size: 11px; color: var(--ink-muted); }
+
+    .c4-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .c4-item.active .c4-check {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .c4-check svg { display: none; width: 10px; height: 10px; stroke: #fff; stroke-width: 3; }
+    .c4-item.active .c4-check svg { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="header-lab">
+    <h1>Hokusai — Capture Selection Design Lab</h1>
+    <p>Testing 4 alternate layouts for Visible, Full Page, and Responsive selection.</p>
+  </div>
+
+  <div class="concepts-grid">
+
+    <!-- CONCEPT 1 -->
+    <div class="concept-wrapper">
+      <div class="concept-title-bar">
+        <span class="concept-num">Concept 1</span>
+        <span class="concept-name">3-Column Visual Cards</span>
+      </div>
+      <div class="c1-grid">
+        <div class="c1-card active">
+          <div class="c1-wireframe">
+            <div class="wf-visible-box"></div>
+          </div>
+          <span class="c1-title">Visible</span>
+          <span class="c1-badge">⌘1</span>
+        </div>
+        <div class="c1-card">
+          <div class="c1-wireframe">
+            <div class="wf-fullpage-lines">
+              <div class="wf-line"></div>
+              <div class="wf-line"></div>
+              <div class="wf-line"></div>
+            </div>
+          </div>
+          <span class="c1-title">Full Page</span>
+          <span class="c1-badge">⌘2</span>
+        </div>
+        <div class="c1-card">
+          <div class="c1-wireframe">
+            <div class="wf-responsive-devices">
+              <div class="dev-mon"></div>
+              <div class="dev-mob"></div>
+            </div>
+          </div>
+          <span class="c1-title">Responsive</span>
+          <span class="c1-badge">⌘3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONCEPT 2 -->
+    <div class="concept-wrapper">
+      <div class="concept-title-bar">
+        <span class="concept-num">Concept 2</span>
+        <span class="concept-name">Segmented Pill Switcher</span>
+      </div>
+      <div class="c2-container">
+        <div class="c2-segmented">
+          <button class="c2-pill">Visible</button>
+          <button class="c2-pill active">Full Page</button>
+          <button class="c2-pill">Responsive</button>
+        </div>
+        <div class="c2-meta-box">
+          <span class="c2-meta-text">Estimated Time &amp; Resolution</span>
+          <span class="c2-meta-val">~1.2s • 1440x3200px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONCEPT 3 -->
+    <div class="concept-wrapper">
+      <div class="concept-title-bar">
+        <span class="concept-num">Concept 3</span>
+        <span class="concept-name">Expandable Detailed Cards</span>
+      </div>
+      <div class="c3-list">
+        <div class="c3-card">
+          <div class="c3-card-row">
+            <div class="c3-title-group">
+              <div class="c3-radio"></div>
+              <span class="c3-title">Visible Viewport</span>
+            </div>
+            <span class="c3-desc">Instant</span>
+          </div>
+        </div>
+        <div class="c3-card active">
+          <div class="c3-card-row">
+            <div class="c3-title-group">
+              <div class="c3-radio"></div>
+              <span class="c3-title">Full Page Capture</span>
+            </div>
+            <span class="c3-desc">Stitched</span>
+          </div>
+          <div class="c3-tags">
+            <span class="c3-tag">Auto-Scroll</span>
+            <span class="c3-tag">Header Sticky Fix</span>
+            <span class="c3-tag">HD Canvas</span>
+          </div>
+        </div>
+        <div class="c3-card">
+          <div class="c3-card-row">
+            <div class="c3-title-group">
+              <div class="c3-radio"></div>
+              <span class="c3-title">Responsive Breakpoints</span>
+            </div>
+            <span class="c3-desc">3 Devices</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONCEPT 4 -->
+    <div class="concept-wrapper">
+      <div class="concept-title-bar">
+        <span class="concept-num">Concept 4</span>
+        <span class="concept-name">Icon Tiles with Quick-Check</span>
+      </div>
+      <div class="c4-list">
+        <div class="c4-item active">
+          <div class="c4-left">
+            <div class="c4-icon-box">⚡</div>
+            <div class="c4-info">
+              <span class="c4-name">Visible Viewport</span>
+              <span class="c4-sub">Capture current window immediately</span>
+            </div>
+          </div>
+          <div class="c4-check">
+            <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <div class="c4-item">
+          <div class="c4-left">
+            <div class="c4-icon-box">📜</div>
+            <div class="c4-info">
+              <span class="c4-name">Full Webpage</span>
+              <span class="c4-sub">Stitch entire scrollable page height</span>
+            </div>
+          </div>
+          <div class="c4-check">
+            <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <div class="c4-item">
+          <div class="c4-left">
+            <div class="c4-icon-box">📱</div>
+            <div class="c4-info">
+              <span class="c4-name">Responsive Breakpoints</span>
+              <span class="c4-sub">Desktop (1440), Tablet (768), Mobile (375)</span>
+            </div>
+          </div>
+          <div class="c4-check">
+            <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

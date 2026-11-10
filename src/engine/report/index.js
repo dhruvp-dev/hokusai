@@ -11,7 +11,7 @@ export default class Reporter {
    * @param {number} totalSites
    */
   start(totalSites) {
-    console.log(`\n${BOLD}📸 Hokusai${RESET}`);
+    console.log(`\n${BOLD}Hokusai${RESET}`);
     console.log(`${DIM}──────────────────────────────────────────────${RESET}`);
     console.log(`Found ${totalSites} website${totalSites === 1 ? '' : 's'}\n`);
   }
@@ -59,11 +59,11 @@ export default class Reporter {
     const timeSec = (totalDurationMs / 1000).toFixed(1);
     console.log(`${DIM}──────────────────────────────────────────────${RESET}`);
     console.log(
-      `✅  Completed ${totalSites} website${totalSites === 1 ? '' : 's'}.`
+      `Completed ${totalSites} website${totalSites === 1 ? '' : 's'}.`
     );
     console.log(
-      `🖼   Generated ${totalScreenshots} screenshot${totalScreenshots === 1 ? '' : 's'} → ${CYAN}${outputDir}${RESET}`
+      `Generated ${totalScreenshots} screenshot${totalScreenshots === 1 ? '' : 's'} → ${CYAN}${outputDir}${RESET}`
     );
-    console.log(`⏱   Total time: ${timeSec}s\n`);
+    console.log(`Total time: ${timeSec}s\n`);
   }
 }
