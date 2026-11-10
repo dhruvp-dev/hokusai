@@ -25,7 +25,23 @@ export async function waitUntilStable(page, bufferMs = 300, delayMs = 0) {
     // Proceed if fonts take too long
   }
 
-  // 3. Wait for all image tags to load completely (max 5s)
+  // 3a. Scroll through the page so lazy-loaded images (loading="lazy") start
+  // fetching, then return to the top for a clean full-page capture.
+  try {
+    await page.evaluate(async () => {
+      const step = Math.max(window.innerHeight, 400);
+      const max = document.documentElement.scrollHeight;
+      for (let y = 0; y < max; y += step) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 50));
+      }
+      window.scrollTo(0, 0);
+    });
+  } catch (err) {
+    // Scrolling is best-effort; continue if the page blocks it
+  }
+
+  // 3b. Wait for all image tags to load completely (max 5s)
   try {
     await page.waitForFunction(() => {
       const images = Array.from(document.images);

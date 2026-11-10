@@ -118,6 +118,9 @@ hokusai ./sites -b "#2a2a35" -p 60 -d 500 -v desktop:1920x1080 -v mobile:375x812
 | `--background` | `-b` | `string` | Backdrop canvas color. Supports any valid CSS color. |
 | `--padding` | `-p` | `number` | Padding in pixels around the device frames. |
 | `--delay` | `-d` | `number` | Additional wait duration in milliseconds after page load to let animations settle. |
+| `--wait-after-load` | | `number` | Alias for `--delay`. |
+| `--sitemap` | `-s` | `string` | Capture every page in a `sitemap.xml` (URL or local file). Sitemap indexes are followed; pages are sorted by `<priority>`. |
+| `--limit` | | `number` | Maximum number of sitemap pages to capture. |
 | `--no-frame` | | `boolean` | Disable framing entirely; writes raw screenshots. |
 | `--help` | `-h` | `boolean` | Prints usage information. |
 

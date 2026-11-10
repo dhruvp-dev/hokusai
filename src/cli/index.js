@@ -14,6 +14,7 @@ import HtmlProvider from '../providers/html/index.js';
 import ViteProvider from '../providers/vite/index.js';
 import NextProvider from '../providers/next/index.js';
 import UrlProvider from '../providers/url/index.js';
+import { resolveSitemapUrls } from '../utils/sitemap.js';
 import { parseAndNormalizeUrl, slugFromUrl } from '../utils/url.js';
 import Site from '../models/Site.js';
 
@@ -36,6 +37,11 @@ Options:
                                       Example: -p 60
   -d, --delay <number>                Wait duration in milliseconds after page load before capture.
                                       Example: -d 1000
+  --wait-after-load <number>          Alias for --delay.
+  -s, --sitemap <path|url>            Capture every page listed in a sitemap.xml (URL or local file).
+                                      Sitemap indexes are followed. Pages are sorted by <priority>.
+                                      Example: -s https://example.com/sitemap.xml --limit 15
+  --limit <number>                    Maximum number of sitemap pages to capture.
   --no-frame                          Disable device frames entirely.
   -h, --help                          Show this help message.
 
@@ -61,6 +67,8 @@ async function main() {
         padding: { type: 'string', short: 'p' },
         delay: { type: 'string', short: 'd' },
         'wait-after-load': { type: 'string' },
+        sitemap: { type: 'string', short: 's' },
+        limit: { type: 'string' },
         frame: { type: 'boolean', default: true },
         'no-frame': { type: 'boolean' },
         help: { type: 'boolean', short: 'h' },
@@ -94,7 +102,7 @@ async function main() {
 
   // 2a. Discover local sites if positional arg is provided OR if no --url flag is passed
   const hasUrlOption = values.url && values.url.length > 0;
-  if (targetArg || !hasUrlOption) {
+  if (targetArg || (!hasUrlOption && !values.sitemap)) {
     const sitePaths = await discover(targetDir, config.exclude);
     for (const sitePath of sitePaths) {
       const providerType = detectSiteProvider(sitePath);
@@ -116,6 +124,32 @@ async function main() {
         console.error(`Error: Invalid URL '${rawUrl}' - ${err.message}`);
         process.exit(1);
       }
+    }
+  }
+
+  // 2c. Add pages from a sitemap
+  if (values.sitemap) {
+    const limit = values.limit !== undefined ? parseInt(values.limit, 10) : null;
+    if (values.limit !== undefined && (Number.isNaN(limit) || limit < 1)) {
+      console.error(`Error: --limit must be a positive number, got '${values.limit}'`);
+      process.exit(1);
+    }
+    let sitemapUrls;
+    try {
+      sitemapUrls = await resolveSitemapUrls(values.sitemap, limit);
+    } catch (err) {
+      console.error(`Error: ${err.message}`);
+      process.exit(1);
+    }
+    if (sitemapUrls.length === 0) {
+      console.error(`Error: No pages found in sitemap '${values.sitemap}'`);
+      process.exit(1);
+    }
+    for (const pageUrl of sitemapUrls) {
+      const parsed = new URL(pageUrl);
+      const slug = slugFromUrl(parsed);
+      const displayName = parsed.hostname + (parsed.pathname !== '/' ? parsed.pathname : '');
+      sites.push(new Site({ slug, displayName, absolutePath: parsed.href, isUrl: true, providerType: 'url' }));
     }
   }
 
