@@ -327,6 +327,52 @@ html, body {
 }
 
 /* ─────────────────────────────────────────────
+   DEVICE PICKER — CLEAN SEGMENTED CHIPS
+   ───────────────────────────────────────────── */
+.device-grid {
+  display: flex;
+  gap: 6px;
+}
+
+.device-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 4px;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease);
+  user-select: none;
+  text-align: center;
+}
+
+.device-card:hover {
+  color: var(--c-ink);
+  background: var(--c-surface-3);
+}
+
+.device-card.active {
+  background: var(--c-accent);
+  color: #ffffff;
+  border-color: var(--c-accent);
+}
+
+.device-card .device-name {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.device-card .device-dims {
+  font-size: 9px;
+  opacity: 0.75;
+  margin-top: 1px;
+}
+
+/* ─────────────────────────────────────────────
    FRAME PICKER — CLEAN SEGMENTED CHIPS
    ───────────────────────────────────────────── */
 .frame-grid {

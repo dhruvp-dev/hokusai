@@ -2,6 +2,7 @@ const state = {
   frameStyle: 'arc',
   format: 'webp',
   theme: 'dark',
+  device: 'desktop',
   lastCapture: null,
   isCapturing: false,
 };

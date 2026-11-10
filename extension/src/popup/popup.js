@@ -20,6 +20,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     }
 
+    // Sync Device chips
+    if (state.device) {
+      document.querySelectorAll('#device-chips .device-card').forEach(card => {
+        card.classList.toggle('active', card.getAttribute('data-device') === state.device);
+      });
+    }
+
     // Sync Background Preset chips
     if (state.background) {
       document.querySelectorAll('#bg-presets .preset-card').forEach(card => {
@@ -79,6 +86,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (cardEl) cardEl.classList.toggle('active', c.id === targetId);
     });
     selectedMode = mode;
+
+    const deviceSection = document.getElementById('device-section');
+    if (deviceSection) {
+      deviceSection.classList.toggle('hidden', mode !== 'CAPTURE_RESPONSIVE');
+    }
   }
 
   captureCards.forEach(item => {
@@ -99,9 +111,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  // Device Selection Cards
+  document.querySelectorAll('#device-chips .device-card').forEach(chip => {
+    chip.addEventListener('click', (e) => {
+      const dev = e.currentTarget.getAttribute('data-device');
+      setState({ device: dev });
+
+      if (getState().lastCapture?.dataUrl && selectedMode === 'CAPTURE_RESPONSIVE') {
+        executeCapture(selectedMode, dev);
+      }
+    });
+  });
+
   // Submit button triggers capture
   document.getElementById('btn-submit-capture')?.addEventListener('click', () => {
-    executeCapture(selectedMode);
+    const currentDevice = getState().device || 'desktop';
+    executeCapture(selectedMode, currentDevice);
   });
 
   // Cancel button closes popup window
@@ -118,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       await settings.set({ frameStyle: style });
 
       if (getState().lastCapture?.dataUrl) {
-        executeCapture(selectedMode);
+        executeCapture(selectedMode, getState().device || 'desktop');
       }
     });
   });

@@ -1,6 +1,7 @@
 import { renderArc } from './arc.js';
 import { renderFirefox } from './firefox.js';
 import { renderMinimal } from './minimal.js';
+import { renderMobile } from './mobile.js';
 import { createCanvas, loadImage, canvasToDataUrl } from './shared/canvas.js';
 
 export async function applyFrame(captureInput, style = 'arc', opts = {}) {
@@ -10,10 +11,14 @@ export async function applyFrame(captureInput, style = 'arc', opts = {}) {
     dataUrl = await assembleStrips(captureInput, opts);
   }
 
+  if (style === 'none') return dataUrl;
+  if (opts.device === 'mobile' || style === 'mobile') {
+    return await renderMobile(dataUrl, opts);
+  }
   if (style === 'arc')     return await renderArc(dataUrl, opts);
   if (style === 'firefox') return await renderFirefox(dataUrl, opts);
   if (style === 'minimal') return await renderMinimal(dataUrl, opts);
-  return dataUrl; // 'none'
+  return dataUrl;
 }
 
 async function assembleStrips(stitched, opts) {

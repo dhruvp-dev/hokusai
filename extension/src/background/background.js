@@ -159,7 +159,8 @@ async function handleCapture(type, tabId, optsOverride = {}) {
     padding: options.padding,
     quality: options.quality,
     format: options.format,
-    url: hostname
+    url: hostname,
+    device: options.device
   });
 
   const captureRecord = {
