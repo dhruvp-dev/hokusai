@@ -1,6 +1,6 @@
 import { setViewport } from './viewport.js';
 import { waitUntilStable } from './wait.js';
-import { injectAnimationKill } from './css.js';
+import { injectAnimationKill, collapseScrollRunways } from './css.js';
 import { takeScreenshot } from './screenshot.js';
 import Screenshot from '../../models/Screenshot.js';
 
@@ -50,6 +50,7 @@ export async function capture(page, site, config, outputManager) {
   await setViewport(page, defaultVp);
   await waitUntilStable(page, bufferMs, delayMs);
   await injectAnimationKill(page);
+  await collapseScrollRunways(page);
 
   // Measure the document height
   const pageHeight = await page.evaluate(() => document.documentElement.scrollHeight);

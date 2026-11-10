@@ -25,18 +25,22 @@ export async function waitUntilStable(page, bufferMs = 300, delayMs = 0) {
     // Proceed if fonts take too long
   }
 
-  // 3a. Scroll through the page so lazy-loaded images (loading="lazy") start
-  // fetching, then return to the top for a clean full-page capture.
+  // 3a. Scroll through the page slowly so lazy-loaded images (loading="lazy")
+  // start fetching and scroll-reveal sections (opacity 0 until intersecting)
+  // become visible. Then return to the top for a clean full-page capture.
   try {
     await page.evaluate(async () => {
-      const step = Math.max(window.innerHeight, 400);
+      const step = Math.max(Math.floor(window.innerHeight / 2), 300);
+      const deadline = Date.now() + 15000;
       const max = document.documentElement.scrollHeight;
-      for (let y = 0; y < max; y += step) {
+      for (let y = 0; y < max && Date.now() < deadline; y += step) {
         window.scrollTo(0, y);
-        await new Promise((r) => setTimeout(r, 50));
+        await new Promise((r) => setTimeout(r, 250));
       }
       window.scrollTo(0, 0);
     });
+    // Give lazy fetches and reveal transitions time to finish after the scroll.
+    await page.waitForTimeout(1000);
   } catch (err) {
     // Scrolling is best-effort; continue if the page blocks it
   }
