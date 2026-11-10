@@ -12,6 +12,7 @@ const config = {
   screenshot: {
     quality: 90,
     waitBufferMs: 300,
+    delay: 0,
   },
 
   frame: {
@@ -42,6 +43,13 @@ export function applyCliOverrides(baseConfig, cliArgs) {
     const padding = parseInt(cliArgs.padding, 10);
     if (!isNaN(padding)) {
       merged.frame.padding = padding;
+    }
+  }
+
+  if (cliArgs.delay !== undefined || cliArgs['wait-after-load'] !== undefined) {
+    const delay = parseInt(cliArgs.delay ?? cliArgs['wait-after-load'], 10);
+    if (!isNaN(delay)) {
+      merged.screenshot.delay = delay;
     }
   }
 

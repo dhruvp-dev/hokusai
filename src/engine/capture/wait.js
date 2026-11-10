@@ -7,9 +7,10 @@
  * 
  * @param {import('playwright').Page} page
  * @param {number} [bufferMs=300] - safety buffer duration
+ * @param {number} [delayMs=0] - additional user-defined wait duration in ms
  * @returns {Promise<void>}
  */
-export async function waitUntilStable(page, bufferMs = 300) {
+export async function waitUntilStable(page, bufferMs = 300, delayMs = 0) {
   // 1. Wait for network connections to drop to 0 (default timeout 30s is fine, or set to 10s)
   try {
     await page.waitForLoadState('networkidle', { timeout: 10000 });
@@ -39,6 +40,22 @@ export async function waitUntilStable(page, bufferMs = 300) {
     // Proceed if images take too long (e.g. lazy loaded or slow external images)
   }
 
-  // 4. Final safety timeout
+  // 4. Wait for active CSS and Web Animations to complete/settle (max 3s)
+  try {
+    await page.waitForFunction(() => {
+      if (!document.getAnimations) return true;
+      const animations = document.getAnimations();
+      return animations.every((anim) => anim.playState === 'finished' || anim.playState === 'paused');
+    }, null, { timeout: 3000 });
+  } catch (err) {
+    // Proceed if animations don't settle within timeout
+  }
+
+  // 5. User-configured delay if specified
+  if (delayMs > 0) {
+    await page.waitForTimeout(delayMs);
+  }
+
+  // 6. Final safety timeout
   await page.waitForTimeout(bufferMs);
 }

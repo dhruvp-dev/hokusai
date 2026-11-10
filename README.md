@@ -99,11 +99,14 @@ hokusai --viewport desktop:1920x1080
 # Appending brand new viewports:
 hokusai --viewport widescreen:2560x1440
 
+# Wait for JavaScript animations or transitions to complete
+hokusai --delay 1000
+
 # Disable device framing completely to output raw screenshot captures
 hokusai --no-frame
 
 # Combine multiple overrides
-hokusai ./sites -b "#2a2a35" -p 60 -v desktop:1920x1080 -v mobile:375x812
+hokusai ./sites -b "#2a2a35" -p 60 -d 500 -v desktop:1920x1080 -v mobile:375x812
 ```
 
 ### Full Options Reference
@@ -114,6 +117,7 @@ hokusai ./sites -b "#2a2a35" -p 60 -v desktop:1920x1080 -v mobile:375x812
 | `--viewport` | `-v` | `string` | Viewport definition in the format `name:widthxheight`. Can be specified multiple times to override default or add new viewports. |
 | `--background` | `-b` | `string` | Backdrop canvas color. Supports any valid CSS color. |
 | `--padding` | `-p` | `number` | Padding in pixels around the device frames. |
+| `--delay` | `-d` | `number` | Additional wait duration in milliseconds after page load to let animations settle. |
 | `--no-frame` | | `boolean` | Disable framing entirely; writes raw screenshots. |
 | `--help` | `-h` | `boolean` | Prints usage information. |
 
@@ -157,7 +161,7 @@ src/
 ## Roadmap
 
 - **v0.1:** HTML/CSS/JS discovery, Arc/Mobile frames, auto port allocation
-- **v0.2:** CLI configurations for custom viewport sizes, background colors, and canvas padding (Current)
+- **v0.2:** CLI configurations for custom viewport sizes, background colors, canvas padding, and animation delays
 - **v0.3:** Vite framework provider support
 - **v0.4:** Next.js framework provider support
 - **v0.5:** Astro framework provider support

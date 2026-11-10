@@ -18,11 +18,12 @@ export async function capture(page, site, config, outputManager) {
   const screenshots = [];
   const quality = config.screenshot?.quality ?? 90;
   const bufferMs = config.screenshot?.waitBufferMs ?? 300;
+  const delayMs = config.screenshot?.delay ?? 0;
 
   // 1. Capture standard viewports
   for (const vp of config.viewports) {
     await setViewport(page, vp);
-    await waitUntilStable(page, bufferMs);
+    await waitUntilStable(page, bufferMs, delayMs);
     await injectAnimationKill(page);
 
     const rawPath = outputManager.createOutputPath(site.slug, vp.name, 'raw');
@@ -47,7 +48,7 @@ export async function capture(page, site, config, outputManager) {
   // Use first viewport (desktop) to ensure desktop rendering layout
   const defaultVp = config.viewports[0] || { width: 1440, height: 900 };
   await setViewport(page, defaultVp);
-  await waitUntilStable(page, bufferMs);
+  await waitUntilStable(page, bufferMs, delayMs);
   await injectAnimationKill(page);
 
   // Measure the document height

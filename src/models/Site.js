@@ -8,12 +8,14 @@ export default class Site {
    * @param {string} params.displayName
    * @param {string} params.absolutePath
    * @param {boolean} [params.isUrl=false]
+   * @param {string} [params.providerType='html']
    */
-  constructor({ slug, displayName, absolutePath, isUrl = false }) {
+  constructor({ slug, displayName, absolutePath, isUrl = false, providerType = 'html' }) {
     this.slug = slug;
     this.displayName = displayName;
     this.absolutePath = absolutePath;
     this.isUrl = isUrl;
+    this.providerType = isUrl ? 'url' : providerType;
 
     // Filled during pipeline execution
     this.provider = null;
