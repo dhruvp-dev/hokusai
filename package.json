@@ -34,7 +34,10 @@
   },
   "scripts": {
     "start": "node src/cli/index.js",
-    "screenshot": "node src/cli/index.js"
+    "screenshot": "node src/cli/index.js",
+    "ext:build": "pnpm --filter hokusai-extension build",
+    "ext:watch": "pnpm --filter hokusai-extension watch",
+    "ext:package": "pnpm --filter hokusai-extension package"
   },
   "dependencies": {
     "http": "^0.0.1-security",

@@ -158,6 +158,22 @@ src/
   utils/        # File, path, and port helpers
 ```
 
+### Repo Layout
+
+This is a pnpm workspace with two packages:
+
+- `src/` — the `hokusai-ss` CLI (published to npm)
+- `extension/` — the Firefox browser extension (private)
+
+Extension commands, run from the repo root:
+
+```bash
+pnpm install          # install all workspace dependencies
+pnpm ext:build        # build the extension into extension/dist
+pnpm ext:watch        # rebuild on change
+pnpm ext:package      # build and zip to extension/hokusai-extension.zip
+```
+
 ## Roadmap
 
 - **v0.1:** HTML/CSS/JS discovery, Arc/Mobile frames, auto port allocation
