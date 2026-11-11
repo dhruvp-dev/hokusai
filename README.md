@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/hokusai-icon.svg" width="128" height="128" alt="Hokusai Logo">
+  <img src="https://raw.githubusercontent.com/dhruvp-dev/hokusai/main/assets/hokusai-icon.svg" width="128" height="128" alt="Hokusai Logo">
 </p>
 
 # Hokusai
