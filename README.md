@@ -16,6 +16,9 @@ Hokusai is an open-source, zero-configuration screenshot utility for static HTML
 - **Asset Load Detection:** Waits for network idle states, web fonts, and image elements to resolve before capturing.
 - **Automated Framing:** Generates Arc-style browser chrome headers, phone status bars, and soft drop-shadow backdrops programmatically using SVG overlays and Sharp.
 - **Isolated Execution:** Launches a separate browser page context per site to prevent session or style leakage.
+- **Live URLs & Sitemaps:** Capture any live website with `--url`, or every page of a site with `--sitemap`.
+- **Full-Page Captures:** Triggers lazy-loaded content and collapses scroll-pinned sections so full-page shots come out complete.
+- **Browser Extension:** One-click framed screenshots straight from Firefox (see [Browser Extension](#browser-extension)).
 
 ## Installation
 
@@ -124,6 +127,32 @@ hokusai ./sites -b "#2a2a35" -p 60 -d 500 -v desktop:1920x1080 -v mobile:375x812
 | `--no-frame` | | `boolean` | Disable framing entirely; writes raw screenshots. |
 | `--help` | `-h` | `boolean` | Prints usage information. |
 
+## Browser Extension
+
+Hokusai also ships as a Firefox extension for instant, one-click framed captures while you browse. It lives in `extension/` and is not published to a store yet, so you load it manually.
+
+### Build and load it
+
+```bash
+pnpm install
+pnpm ext:build        # outputs extension/dist
+```
+
+1. Open Firefox and go to `about:debugging#/runtime/this-firefox`.
+2. Click **Load Temporary Add-on...**.
+3. Select `extension/dist/manifest.json` (or `extension/hokusai-extension.zip` after `pnpm ext:package`).
+4. Pin the Hokusai icon to your toolbar.
+
+Temporary add-ons are removed when Firefox restarts. Use `pnpm ext:watch` while developing, then click **Reload** on the `about:debugging` page to pick up changes.
+
+### Using it
+
+- Click the toolbar icon (or press `Ctrl+Shift+H`) to capture the current page.
+- Pick a device frame, gradient background preset, and canvas padding in the popup. The preview updates live.
+- Include mobile frames and responsive captures from the popup.
+- Copy the result to the clipboard or download it; downloads are named after the site.
+- Recent captures are kept in the popup, where you can delete single items or clear them all.
+
 ## Output Structure
 
 All screenshots are generated in the `screenshots` directory relative to the current working directory where the command is executed:
@@ -181,6 +210,7 @@ pnpm ext:package      # build and zip to extension/hokusai-extension.zip
 
 - **v0.1:** HTML/CSS/JS discovery, Arc/Mobile frames, auto port allocation
 - **v0.2:** CLI configurations for custom viewport sizes, background colors, canvas padding, and animation delays
+- **v0.2.x:** Sitemap capture, live URL capture, full-page lazy-load handling, Firefox extension
 - **v0.3:** Vite framework provider support
 - **v0.4:** Next.js framework provider support
 - **v0.5:** Astro framework provider support
