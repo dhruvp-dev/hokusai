@@ -1,79 +1,98 @@
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: block;
+  src: url('../assets/fonts/plus-jakarta-sans-latin-wght-normal.woff2') format('woff2');
+}
+
 :root {
-  /* ── Reference UI Palette ───────────────────── */
-  --c-bg:        #f3f3f5;
-  --c-surface:   #ffffff;
-  --c-surface-2: #f6f6f7;
-  --c-surface-3: #eeeeef;
-  --c-border:    #e4e4e7;
-  --c-border-md: #d4d4d8;
+  --c-bg:        #ffffff;  --c-surface:   #ffffff;  --c-surface-2: #f6f7f8;  --c-surface-3: #eceef1;  --c-hover:     rgba(0, 0, 0, 0.04);  --c-border:    rgba(0, 0, 0, 0.08);  --c-border-md: rgba(0, 0, 0, 0.16);
 
-  --c-ink:       #18181b;
-  --c-ink-2:     #3f3f46;
-  --c-ink-3:     #71717a;
-  --c-ink-4:     #a1a1aa;
+  --c-ink:       rgba(0, 0, 0, 0.95);
+  --c-ink-2:     #5f636b;  --c-ink-3:     rgba(0, 0, 0, 0.54);
+  --c-ink-4:     rgba(0, 0, 0, 0.40);
 
-  --c-accent:    #4f86f7;   /* signature blue */
-  --c-accent-2:  #3d78f6;
-  --c-accent-bg: rgba(79, 134, 247, 0.1);
-  --c-accent-border: #4f86f7;
+  --c-accent:        #0a6cff;
+  --c-accent-2:      #0055d4;
+  --c-accent-bg:     #e8f0ff;  --c-accent-border: #0075de;
+  --c-accent-ring:   rgba(10, 108, 255, 0.22);
+  --c-on-accent:     #ffffff;
 
-  /* ── Semantic Aliases ───────────────────────── */
-  --bg-base:     var(--c-bg);
-  --bg-surface:  var(--c-surface);
-  --bg-hover:    var(--c-surface-2);
-  --text-main:   var(--c-ink);
-  --text-2:      var(--c-ink-2);
-  --text-muted:  var(--c-ink-3);
-  --text-faint:  var(--c-ink-4);
-  --border:      var(--c-border);
-  --accent:      var(--c-accent);
+  --c-marigold: #ffb110;
+  --c-coral:    #f64932;
+  --c-sun:      #f64932;
+
+  --bg-base:      var(--c-bg);
+  --bg-surface:   var(--c-surface);
+  --bg-hover:     var(--c-hover);
+  --text-main:    var(--c-ink);
+  --text-2:       var(--c-ink-2);
+  --text-muted:   var(--c-ink-3);
+  --text-faint:   var(--c-ink-4);
+  --border:       var(--c-border);
+  --accent:       var(--c-accent);
   --accent-hover: var(--c-accent-2);
 
-  /* ── Geometry ───────────────────────────────── */
-  --r-xs:   4px;
-  --r-sm:   6px;
-  --r-md:   8px;
-  --r-lg:   20px;
+  --r-xs:   4px;  --r-sm:   8px;  --r-md:   12px;  --r-lg:   12px;
   --r-pill: 9999px;
 
-  /* ── Elevation ──────────────────────────────── */
-  --shadow-xs: none;
-  --shadow-sm: 0 4px 20px rgba(0,0,0,0.06);
-  --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
-  --shadow-accent: none;
+  --shadow-xs: 0 1px 1px rgba(20, 24, 40, 0.04), 0 1px 2px rgba(20, 24, 40, 0.04);
+  --shadow-sm: 0 1px 2px rgba(20, 24, 40, 0.05), 0 2px 6px rgba(20, 24, 40, 0.05), 0 6px 14px -4px rgba(20, 24, 40, 0.06);
+  --shadow-md: 0 2px 4px rgba(20, 24, 40, 0.05), 0 8px 20px -4px rgba(20, 24, 40, 0.10), 0 16px 32px -8px rgba(20, 24, 40, 0.08);
+  --shadow-inset: inset 0 1px 2px rgba(20, 24, 40, 0.08);
+  --highlight: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --shadow-primary: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 1px 2px rgba(0, 60, 130, 0.35), 0 4px 12px -2px rgba(10, 108, 255, 0.40);
+  --neu-light: rgba(255, 255, 255, 0.95);
+  --neu-dark:  rgba(120, 100, 80, 0.26);
+  --neu-out:   6px 6px 14px var(--neu-dark), -6px -6px 14px var(--neu-light);
+  --neu-out-sm: 3px 3px 8px var(--neu-dark), -3px -3px 8px var(--neu-light);
+  --neu-in:    inset 4px 4px 9px var(--neu-dark), inset -4px -4px 9px var(--neu-light);
+  --neu-in-sm: inset 2px 2px 5px var(--neu-dark), inset -2px -2px 5px var(--neu-light);
+  --primary-grad: linear-gradient(180deg, #2a7bff 0%, #0a6cff 100%);
+  --primary-grad-hover: linear-gradient(180deg, #3a86ff 0%, #1a76ff 100%);
 
-  /* ── Motion ─────────────────────────────────── */
-  --dur-fast: 120ms;
-  --dur: 180ms;
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-overlay: 0px 0.7px 1.462px 0px rgba(0, 0, 0, 0.015), 0px 3px 9px 0px rgba(0, 0, 0, 0.03);
+  --shadow-mockup:  0px 4px 12px rgba(0, 0, 0, 0.1);
 
-  /* ── Typography ─────────────────────────────── */
-  --font: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --dur-fast: 200ms;
+  --dur:      200ms;
+  --ease:     ease;
+  --spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --font: 'Plus Jakarta Sans';
+  --font-mono: var(--font);
   --popup-width: 388px;
 }
 
-/* Dark theme */
 [data-theme="dark"] {
-  --c-bg:        #09090b;
-  --c-surface:   #18181b;
-  --c-surface-2: #27272a;
-  --c-surface-3: #3f3f46;
-  --c-border:    #27272a;
-  --c-border-md: #3f3f46;
+  --c-bg:        #18181b;
+  --c-surface:   #1f1f23;
+  --c-surface-2: #18181b;
+  --c-surface-3: #27272c;
+  --c-hover:     rgba(255, 255, 255, 0.055);
+  --c-border:    rgba(255, 255, 255, 0.09);
+  --c-border-md: rgba(255, 255, 255, 0.18);
 
-  --c-ink:       #f4f4f5;
-  --c-ink-2:     #e4e4e7;
-  --c-ink-3:     #a1a1aa;
-  --c-ink-4:     #71717a;
+  --c-ink:       rgba(255, 255, 255, 0.92);
+  --c-ink-2:     #a5a29f;
+  --c-ink-3:     rgba(255, 255, 255, 0.55);
+  --c-ink-4:     rgba(255, 255, 255, 0.38);
 
-  --c-accent:    #4f86f7;
-  --c-accent-2:  #3d78f6;
-  --c-accent-bg: rgba(79, 134, 247, 0.15);
-  --c-accent-border: #4f86f7;
+  --c-accent:        #2383e2;
+  --c-accent-2:      #3a92ea;
+  --c-accent-bg:     rgba(35, 131, 226, 0.16);
+  --c-accent-border: #2383e2;
+  --c-accent-ring:   rgba(35, 131, 226, 0.32);
 
-  --shadow-xs: none;
-  --shadow-sm: 0 4px 20px rgba(0,0,0,0.4);
-  --shadow-md: 0 10px 30px rgba(0,0,0,0.6);
-  --shadow-accent: none;
+  --shadow-overlay: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.45), 0 10px 28px rgba(0, 0, 0, 0.5);
+  --shadow-inset: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  --highlight: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --neu-light: rgba(255, 255, 255, 0.045);
+  --neu-dark:  rgba(0, 0, 0, 0.65);
+  --primary-grad: linear-gradient(180deg, #3a95ec 0%, #2383e2 100%);
+  --primary-grad-hover: linear-gradient(180deg, #4a9ff0 0%, #2d8ceb 100%);
 }
-

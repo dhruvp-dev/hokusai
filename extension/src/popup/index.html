@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-style="dub">
 <head>
   <meta charset="UTF-8">
   <title>Hokusai</title>
@@ -11,66 +11,45 @@
     <!-- HEADER -->
     <div class="popup-header">
       <div class="brand-block">
-        <div class="brand-title">
-          <span id="logo-icon" class="brand-logo"></span>
-          <span class="brand-name">Hokusai Capture</span>
+        <span id="logo-icon" class="brand-logo"></span>
+        <div class="brand-text">
+          <span class="brand-name">Hokusai</span>
+          <span class="brand-subtitle" id="current-tab-url">Framed screenshots</span>
         </div>
-        <div class="brand-subtitle">Select capture options from the list</div>
       </div>
       <div class="header-actions">
-        <button id="btn-theme" class="icon-btn" title="Toggle Theme"></button>
-        <button id="btn-settings" class="icon-btn" title="Settings"></button>
+        <button id="btn-theme" class="icon-btn" data-tip="Toggle theme" aria-label="Toggle theme"><svg class="ti-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 11.966A6.5 6.5 0 1 1 12.035 3H12a9 9 0 1 0 9 9z" fill="none"/></svg><svg class="ti-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 23v-1m-7.778-2.222.707-.707M1 12h1m2.222-7.778.707.707M12 2V1m7.071 3.929.707-.707M22 12h1m-3.929 7.071.707.707M18 12a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z" fill="none"/></svg></button>
+        <button id="btn-settings" class="icon-btn" data-tip="Settings" aria-label="Settings"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.2 4.12c.632-.618.947-.927 1.31-1.043.319-.103.661-.103.98 0 .363.116.678.425 1.31 1.043l.303.297c.273.267.409.4.567.497q.211.128.453.187c.18.044.37.046.752.05l.425.005c.883.009 1.325.013 1.663.188.298.153.54.395.694.693.174.338.178.78.187 1.663l.005.425c.004.382.006.573.05.752q.059.242.187.453c.096.158.23.295.497.567l.297.304c.618.63.927.946 1.043 1.309.103.319.103.661 0 .98-.116.363-.425.678-1.043 1.31l-.297.303c-.267.273-.4.409-.497.567q-.128.211-.187.453c-.044.18-.046.37-.05.752l-.005.425c-.009.883-.013 1.325-.187 1.663-.154.298-.396.54-.694.694-.338.174-.78.178-1.663.187l-.425.005c-.382.004-.573.006-.752.05q-.24.059-.453.187c-.158.096-.294.23-.567.497l-.304.297c-.63.618-.946.927-1.309 1.043a1.6 1.6 0 0 1-.98 0c-.363-.116-.678-.425-1.31-1.043l-.303-.297c-.272-.267-.409-.4-.567-.497a1.6 1.6 0 0 0-.453-.187c-.18-.044-.37-.046-.752-.05l-.425-.005c-.883-.009-1.325-.013-1.663-.187a1.6 1.6 0 0 1-.693-.694c-.175-.338-.18-.78-.188-1.663l-.005-.425c-.004-.382-.006-.573-.05-.752a1.6 1.6 0 0 0-.187-.453c-.096-.158-.23-.294-.497-.567l-.297-.304c-.618-.63-.927-.946-1.043-1.309a1.6 1.6 0 0 1 0-.98c.116-.363.425-.678 1.043-1.31l.297-.303c.267-.272.4-.409.497-.567q.128-.212.187-.453c.044-.18.046-.37.05-.752l.005-.425c.009-.883.013-1.325.188-1.663a1.6 1.6 0 0 1 .693-.693c.338-.175.78-.18 1.663-.188l.425-.005c.382-.004.573-.006.752-.05q.242-.059.453-.187c.158-.096.295-.23.567-.497z" fill="none"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.991 12c0-.552.457-1 1.01-1s1.008.448 1.008 1-.457 1-1.009 1-1.009-.448-1.009-1Z" fill="none"/></svg></button>
       </div>
     </div>
 
-    <!-- CURRENT TAB CONTEXT -->
-    <div class="tab-context">
-      <span class="tab-favicon" id="tab-favicon-icon"></span>
-      <span class="tab-label">Target:</span>
-      <span id="current-tab-url" class="tab-url">—</span>
-    </div>
+
 
     <!-- MAIN BODY -->
     <div class="popup-body">
 
       <!-- CAPTURE CHOICES (3-COLUMN VISUAL CARDS) -->
       <section>
-        <div class="capture-grid">
-          <div id="act-visible" class="action-card active">
-            <div class="wireframe-box">
-              <div class="wf-visible-box"></div>
-            </div>
-            <span class="card-title">Visible</span>
-            <span class="card-shortcut">⌘1</span>
+        <div class="tpl-list" role="radiogroup" aria-label="Capture mode">
+          <div id="act-visible" class="tpl-card t-pink active" role="radio" aria-checked="true" tabindex="0">
+            <div class="tpl-thumb"><svg viewBox="0 0 84 62" fill="none" aria-hidden="true"><rect x="9" y="8" width="66" height="46" rx="11" fill="#fff" fill-opacity=".92"/><circle cx="19" cy="17" r="2.2" fill="#d6d6d6"/><circle cx="26" cy="17" r="2.2" fill="#d6d6d6" fill-opacity=".7"/><circle cx="33" cy="17" r="2.2" fill="#d6d6d6" fill-opacity=".45"/><rect x="15" y="24" width="54" height="19" rx="8" fill="var(--t-ink)" fill-opacity=".07" stroke="var(--t-ink)" stroke-width="1.5"/><rect x="15" y="47" width="30" height="3" rx="1.5" fill="#d6d6d6" fill-opacity=".6"/></svg></div>
+            <div class="tpl-info"><span class="tpl-title">Visible</span></div>
           </div>
-          <div id="act-fullpage" class="action-card">
-            <div class="wireframe-box">
-              <div class="wf-fullpage-lines">
-                <div class="wf-line"></div>
-                <div class="wf-line"></div>
-                <div class="wf-line"></div>
-              </div>
-            </div>
-            <span class="card-title">Full Page</span>
-            <span class="card-shortcut">⌘2</span>
+          <div id="act-fullpage" class="tpl-card t-blue" role="radio" aria-checked="false" tabindex="0">
+            <div class="tpl-thumb"><svg viewBox="0 0 84 62" fill="none" aria-hidden="true"><rect x="22" y="3" width="40" height="58" rx="10" fill="#fff" fill-opacity=".94"/><rect x="28" y="11" width="16" height="3.5" rx="1.75" fill="var(--t-ink)" fill-opacity=".75"/><rect x="28" y="19" width="28" height="3" rx="1.5" fill="#d6d6d6"/><rect x="28" y="26" width="28" height="3" rx="1.5" fill="#d6d6d6" fill-opacity=".7"/><rect x="28" y="33" width="20" height="3" rx="1.5" fill="#d6d6d6" fill-opacity=".7"/><rect x="28" y="40" width="28" height="3" rx="1.5" fill="#d6d6d6" fill-opacity=".55"/><rect x="28" y="47" width="16" height="3" rx="1.5" fill="#d6d6d6" fill-opacity=".55"/><rect x="67" y="6" width="3.5" height="50" rx="1.75" fill="#d6d6d6" fill-opacity=".55"/><rect x="67" y="6" width="3.5" height="30" rx="1.75" fill="var(--t-ink)"/></svg></div>
+            <div class="tpl-info"><span class="tpl-title">Full Page</span></div>
           </div>
-          <div id="act-responsive" class="action-card">
-            <div class="wireframe-box">
-              <div class="wf-responsive-devices">
-                <div class="dev-mon"></div>
-                <div class="dev-mob"></div>
-              </div>
-            </div>
-            <span class="card-title">Responsive</span>
-            <span class="card-shortcut">⌘3</span>
+          <div id="act-responsive" class="tpl-card t-mint" role="radio" aria-checked="false" tabindex="0">
+            <div class="tpl-thumb"><svg viewBox="0 0 84 62" fill="none" aria-hidden="true"><rect x="6" y="14" width="46" height="31" rx="7" fill="#fff" fill-opacity=".94"/><rect x="11" y="19" width="15" height="3.5" rx="1.75" fill="var(--t-ink)" fill-opacity=".75"/><rect x="11" y="26" width="36" height="3" rx="1.5" fill="#d6d6d6" fill-opacity=".8"/><rect x="11" y="34" width="36" height="7" rx="3.5" fill="#d6d6d6" fill-opacity=".4"/><rect x="2" y="48" width="54" height="4.5" rx="2.25" fill="#d6d6d6"/><rect x="58" y="10" width="21" height="40" rx="8" fill="#fff" stroke="var(--t-ink)" stroke-width="1.5"/><rect x="65" y="14" width="7" height="2.4" rx="1.2" fill="#d6d6d6"/><rect x="62.5" y="22" width="14" height="3" rx="1.5" fill="#d6d6d6" fill-opacity=".8"/><rect x="62.5" y="37" width="14" height="8" rx="4" fill="#d6d6d6" fill-opacity=".4"/></svg></div>
+            <div class="tpl-info"><span class="tpl-title">Responsive</span></div>
           </div>
         </div>
       </section>
 
       <!-- DEVICE SELECTOR (Visible when Responsive mode is active) -->
-      <section id="device-section" class="device-section hidden">
+      <section id="device-section" class="device-section reveal" data-open="false"><div>
         <div class="section-header">
-          <span class="section-label">Target Device</span>
+          <span class="section-label">Device</span>
         </div>
         <div class="device-grid" id="device-chips">
           <div class="device-card active" data-device="desktop">
@@ -90,25 +69,25 @@
             <span class="device-dims">390×844</span>
           </div>
         </div>
-      </section>
+      </div></section>
 
       <!-- FRAME STYLE -->
       <section>
         <div class="section-header">
-          <span class="section-label">Frame Style</span>
+          <span class="section-label">Frame</span>
         </div>
         <div class="frame-grid" id="frame-chips">
           <div class="frame-card active" data-style="arc">
-            <span class="frame-label">Arc</span>
+            <svg class="frame-glyph" width="28" height="20" viewBox="0 0 28 20" fill="none" aria-hidden="true"><rect x="1" y="1" width="26" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="4.5" width="10" height="3" rx="1.5" fill="currentColor"/></svg><span class="frame-label">Arc</span>
           </div>
           <div class="frame-card" data-style="firefox">
-            <span class="frame-label">Firefox</span>
+            <svg class="frame-glyph" width="28" height="20" viewBox="0 0 28 20" fill="none" aria-hidden="true"><rect x="1" y="1" width="26" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M1 7h26" stroke="currentColor" stroke-width="1.5"/><rect x="4" y="3" width="7" height="2.4" rx="1" fill="currentColor"/></svg><span class="frame-label">Firefox</span>
           </div>
           <div class="frame-card" data-style="minimal">
-            <span class="frame-label">Minimal</span>
+            <svg class="frame-glyph" width="28" height="20" viewBox="0 0 28 20" fill="none" aria-hidden="true"><rect x="1" y="1" width="26" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><circle cx="5" cy="4.6" r="1.1" fill="currentColor"/><circle cx="8.6" cy="4.6" r="1.1" fill="currentColor"/><circle cx="12.2" cy="4.6" r="1.1" fill="currentColor"/></svg><span class="frame-label">Minimal</span>
           </div>
           <div class="frame-card" data-style="none">
-            <span class="frame-label">None</span>
+            <svg class="frame-glyph" width="28" height="20" viewBox="0 0 28 20" fill="none" aria-hidden="true"><rect x="1" y="1" width="26" height="18" rx="5" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2.5"/></svg><span class="frame-label">None</span>
           </div>
         </div>
       </section>
@@ -116,7 +95,7 @@
       <!-- BACKGROUND PRESETS -->
       <section>
         <div class="section-header">
-          <span class="section-label">Background Preset</span>
+          <span class="section-label">Background</span>
         </div>
         <div class="preset-grid" id="bg-presets">
           <div class="preset-card active" data-bg="dark">
@@ -146,12 +125,12 @@
       <section>
         <div class="section-header">
           <div class="section-header-flex">
-            <span class="section-label">Canvas Padding</span>
-            <span id="padding-val-badge" class="badge-val">40px</span>
+            <span class="section-label">Padding</span>
+            <label class="num-field"><input type="number" class="num-input" id="padding-num" min="16" max="96" step="1" value="40" inputmode="numeric" aria-label="Padding in pixels"><span>px</span></label>
           </div>
         </div>
         <div class="slider-row">
-          <input type="range" id="input-padding" min="16" max="96" step="4" value="40" class="range-slider">
+          <input type="range" id="input-padding" min="16" max="96" step="1" value="40" class="range-slider">
         </div>
       </section>
 
@@ -169,15 +148,15 @@
       <!-- LATEST CAPTURE PREVIEW -->
       <div id="preview-section" class="preview-container hidden">
         <div class="section-header">
-          <span class="section-label">Latest Capture</span>
+          <span class="section-label">Last capture</span>
         </div>
         <div class="preview-card">
           <div class="preview-canvas-wrapper">
             <img id="preview-img" class="preview-canvas" alt="Preview">
           </div>
           <div class="preview-actions">
-            <button id="btn-copy" class="btn-primary">Copy Image</button>
-            <button id="btn-download" class="btn-secondary">Download</button>
+            <button id="btn-copy" class="btn-primary"><span class="ico-swap"><svg class="i-a" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.902 16.902a4 4 0 0 0 .643-.147 5 5 0 0 0 3.21-3.21C21 12.792 21 11.861 21 10s0-2.792-.245-3.545a5 5 0 0 0-3.21-3.21C16.792 3 15.861 3 14 3s-2.792 0-3.545.245a5 5 0 0 0-3.21 3.21 4 4 0 0 0-.147.643m9.804 9.804C17 16.239 17 15.372 17 14c0-1.861 0-2.792-.245-3.545a5 5 0 0 0-3.21-3.21C12.792 7 11.861 7 10 7c-1.373 0-2.24 0-2.902.098m9.804 9.804a4 4 0 0 1-.147.643 5 5 0 0 1-3.21 3.21C12.792 21 11.861 21 10 21s-2.792 0-3.545-.245a5 5 0 0 1-3.21-3.21C3 16.792 3 15.861 3 14s0-2.792.245-3.545a5 5 0 0 1 3.21-3.21c.198-.065.407-.112.643-.147" fill="none"/></svg><svg class="i-b" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.902 16.902a4 4 0 0 0 .643-.147 5 5 0 0 0 3.21-3.21C21 12.792 21 11.861 21 10s0-2.792-.245-3.545a5 5 0 0 0-3.21-3.21C16.792 3 15.861 3 14 3s-2.792 0-3.545.245a5 5 0 0 0-3.21 3.21 4 4 0 0 0-.147.643m9.804 9.804C17 16.239 17 15.372 17 14c0-1.861 0-2.792-.245-3.545a5 5 0 0 0-3.21-3.21C12.792 7 11.861 7 10 7c-1.373 0-2.24 0-2.902.098m9.804 9.804a4 4 0 0 1-.147.643 5 5 0 0 1-3.21 3.21C12.792 21 11.861 21 10 21s-2.792 0-3.545-.245a5 5 0 0 1-3.21-3.21C3 16.792 3 15.861 3 14s0-2.792.245-3.545a5 5 0 0 1 3.21-3.21c.198-.065.407-.112.643-.147M7 14.258l2.036 2.035A13 13 0 0 1 13 12" fill="none"/></svg></span><span class="lbl">Copy</span></button>
+            <button id="btn-download" class="btn-secondary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a5 5 0 0 0 5 5h8a5 5 0 0 0 5-5M9 12.188a15 15 0 0 0 2.556 2.655A.7.7 0 0 0 12 15m3-2.812a15 15 0 0 1-2.556 2.655A.7.7 0 0 1 12 15m0 0V4" fill="none"/></svg><span>Download</span></button>
           </div>
         </div>
       </div>
@@ -186,10 +165,10 @@
       <section id="recent-section" class="recent-container">
         <div class="section-header">
           <div class="section-header-flex">
-            <span class="section-label">Recent Captures</span>
-            <button id="btn-clear-history" class="btn-clear-link" title="Clear all recent captures">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-              <span>Clear All</span>
+            <span class="section-label">History</span>
+            <button id="btn-clear-history" class="btn-clear-link" data-tip="Clear history">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 6-1.106-2.211a3.236 3.236 0 0 0-5.788 0L8 6M4 6h16M6 6h12v9c0 1.864 0 2.796-.305 3.53a4 4 0 0 1-2.164 2.165C14.796 21 13.864 21 12 21s-2.796 0-3.53-.305a4 4 0 0 1-2.166-2.164C6 17.796 6 16.864 6 15z" fill="none"/></svg>
+              <span>Clear</span>
             </button>
           </div>
         </div>
@@ -200,10 +179,9 @@
 
     <div class="actions-footer">
       <button id="btn-submit-capture" class="btn-primary">
-        <span>Capture Now</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 22v-3m0 0v-3m0 3h-3m3 0h3m0-5.648V11l-.001-1m-9.464 11H10c-.756 0-1.41 0-1.983-.01M22 10h-1c-1.393 0-2.09 0-2.676.06A11.5 11.5 0 0 0 8.06 20.324c-.02.2-.034.415-.043.665M22 10c-.008-2.15-.068-3.336-.544-4.27a5 5 0 0 0-2.185-2.185C18.2 3 16.8 3 14 3h-4c-2.8 0-4.2 0-5.27.545A5 5 0 0 0 2.545 5.73C2 6.8 2 8.2 2 11v2c0 2.8 0 4.2.545 5.27a5 5 0 0 0 2.185 2.185c.78.398 1.738.505 3.287.534M7.5 9.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" fill="none"/></svg>
+        <span class="lbl">Capture</span>
       </button>
-      <button id="btn-cancel-popup" class="btn-secondary">Cancel</button>
     </div>
 
   </div><!-- /.modal-card -->
@@ -228,14 +206,14 @@
             <label class="setting-label">Image Quality</label>
             <span id="quality-val-badge" class="badge-val">90%</span>
           </div>
-          <input type="range" id="setting-quality" min="50" max="100" step="5" value="90" class="range-slider">
+          <input type="range" id="setting-quality" min="50" max="100" step="1" value="90" class="range-slider">
         </div>
         <div class="setting-item">
           <div class="setting-label-row">
             <label class="setting-label">Canvas Padding</label>
             <span id="drawer-padding-val-badge" class="badge-val">40px</span>
           </div>
-          <input type="range" id="setting-padding" min="16" max="96" step="4" value="40" class="range-slider">
+          <input type="range" id="setting-padding" min="16" max="96" step="1" value="40" class="range-slider">
         </div>
       </div>
     </div>
@@ -244,4 +222,3 @@
   <script type="module" src="popup.bundle.js"></script>
 </body>
 </html>
-
