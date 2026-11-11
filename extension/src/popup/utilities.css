@@ -1,6 +1,0 @@
-.hidden { display: none !important; }
-.flex { display: flex; }
-.items-center { align-items: center; }
-.justify-between { justify-content: space-between; }
-.text-muted { color: var(--c-ink-3); }
-.text-center { text-align: center; }

@@ -26,9 +26,6 @@ const ctx = await esbuild.context({
 
 function copyAssets() {
   cpSync('src/popup/index.html', 'dist/popup/index.html', { recursive: true });
-  cpSync('src/popup/tokens.css', 'dist/popup/tokens.css', { recursive: true });
-  cpSync('src/popup/components.css', 'dist/popup/components.css', { recursive: true });
-  cpSync('src/popup/utilities.css', 'dist/popup/utilities.css', { recursive: true });
   cpSync('src/popup/popup.css', 'dist/popup/popup.css', { recursive: true });
   if (existsSync('assets')) {
     cpSync('assets/', 'dist/assets/', { recursive: true });
