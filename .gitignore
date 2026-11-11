@@ -4,3 +4,7 @@ screenshots/
 *.log
 *.zip
 extension/dist/
+.claude/
+CLAUDE.md
+claude.md
+
