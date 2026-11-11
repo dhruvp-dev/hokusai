@@ -9,6 +9,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node: [18, 20, 22]
     steps:
@@ -22,5 +23,6 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
+        if: matrix.node == 22
       - run: pnpm test
       - run: pnpm ext:build

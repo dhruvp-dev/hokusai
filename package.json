@@ -38,7 +38,7 @@
     "ext:build": "pnpm --filter hokusai-extension build",
     "ext:watch": "pnpm --filter hokusai-extension watch",
     "ext:package": "pnpm --filter hokusai-extension package",
-    "test": "node --test \"test/**/*.test.js\"",
+    "test": "node --test",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
