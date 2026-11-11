@@ -11,7 +11,7 @@ Hokusai is an open-source, zero-configuration screenshot utility for static HTML
 ## Features
 
 - **Zero Configuration:** Scan and discover static sites automatically with no configuration files required.
-- **Provider Architecture:** Extensible architecture designed to support dynamic framework providers (such as Vite, Next.js, and Astro) in future releases.
+- **Framework Support:** Detects plain HTML, Vite, and Next.js projects automatically. It serves a pre-built `dist/` or `out/` folder if one exists, otherwise starts the dev server for you and shuts it down afterwards.
 - **Leaf-Site Filtering:** Recursively walks directory trees and intelligently ignores parent directories if subdirectories contain their own entry points.
 - **Asset Load Detection:** Waits for network idle states, web fonts, and image elements to resolve before capturing.
 - **Automated Framing:** Generates Arc-style browser chrome headers, phone status bars, and soft drop-shadow backdrops programmatically using SVG overlays and Sharp.
@@ -205,16 +205,6 @@ pnpm ext:build        # build the extension into extension/dist
 pnpm ext:watch        # rebuild on change
 pnpm ext:package      # build and zip to extension/hokusai-extension.zip
 ```
-
-## Roadmap
-
-- **v0.1:** HTML/CSS/JS discovery, Arc/Mobile frames, auto port allocation
-- **v0.2:** CLI configurations for custom viewport sizes, background colors, canvas padding, and animation delays
-- **v0.2.x:** Sitemap capture, live URL capture, full-page lazy-load handling, Firefox extension
-- **v0.3:** Vite framework provider support
-- **v0.4:** Next.js framework provider support
-- **v0.5:** Astro framework provider support
-- **v1.0:** Dynamic framework auto-detection
 
 ## License
 
