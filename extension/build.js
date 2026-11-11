@@ -1,8 +1,9 @@
 import * as esbuild from 'esbuild';
-import { cpSync, mkdirSync, existsSync } from 'fs';
+import { cpSync, mkdirSync, existsSync, rmSync } from 'fs';
 
 const watch = process.argv.includes('--watch');
 
+rmSync('dist', { recursive: true, force: true });
 if (!existsSync('dist')) {
   mkdirSync('dist', { recursive: true });
 }

@@ -44,12 +44,12 @@ export function renderRecentCaptures(container, list) {
   container.innerHTML = list.map((item, idx) => `
     <div class="recent-card" data-idx="${idx}">
       <div class="recent-img-wrapper">
-        <img class="recent-full-thumb" src="${item.dataUrl}" alt="Capture" loading="lazy">
+        <img class="recent-full-thumb" src="${escapeHtml(String(item.dataUrl || ''))}" alt="Capture" loading="lazy">
       </div>
       <div class="recent-card-footer">
         <div class="recent-card-info">
           <span class="recent-card-url">${escapeHtml(extractDomain(item.url))}</span>
-          <span class="recent-card-meta">${item.frameStyle ? item.frameStyle : 'arc'} · ${item.format ? item.format.toUpperCase() : 'WEBP'} · ${timeAgo(item.timestamp)}</span>
+          <span class="recent-card-meta">${escapeHtml(String(item.frameStyle || 'arc'))} · ${escapeHtml(String(item.format || 'webp').toUpperCase())} · ${timeAgo(item.timestamp)}</span>
         </div>
         <div class="recent-card-actions">
           <button class="action-icon-btn btn-recent-copy" data-idx="${idx}" data-tip="Copy" aria-label="Copy">${ICONS.ICON_COPY}</button>

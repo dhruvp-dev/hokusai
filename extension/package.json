@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node build.js",
     "watch": "node build.js --watch",
-    "package": "node build.js && (cd dist && zip -rq ../hokusai-extension.zip .)"
+    "package": "node build.js && rm -f hokusai-extension.zip && (cd dist && zip -rq ../hokusai-extension.zip .)"
   },
   "devDependencies": {
     "esbuild": "^0.21.0"
