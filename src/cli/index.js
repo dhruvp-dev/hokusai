@@ -50,6 +50,21 @@ Defaults:
   Padding:           40px
   Background:        #0f0f14
   Viewports:         desktop (1440x900), tablet (1024x1366), mobile (390x844)
+  Output:            ./screenshots/ (WebP: desktop, tablet, mobile, full)
+
+Supported projects (folder mode):
+  Plain HTML, Vite, and Next.js are detected automatically. A built dist/ (Vite) or
+  out/ (Next.js) is served if present; otherwise the dev server is started and stopped for you.
+  For any other framework, start your dev server and use --url http://localhost:<port>.
+
+Examples:
+  hokusai                                   Capture every site found in the current folder
+  hokusai ./my-project                      Capture one project folder
+  hokusai --url https://example.com         Capture a live website
+  hokusai --url http://localhost:3000       Capture an app that is already running
+  hokusai -s https://example.com/sitemap.xml --limit 10
+                                            Capture the first 10 pages of a sitemap
+  hokusai --url https://example.com -d 1000 -b "#ffffff" -p 80 --no-frame
 `);
 }
 
