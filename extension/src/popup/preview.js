@@ -27,7 +27,7 @@ export async function copyCaptureToClipboard(dataUrl) {
 export function buildFilename(url, format = 'webp', ts = Date.now()) {
   let site = 'screenshot';
   try { site = new URL(url).hostname.replace(/^www\./, '') || site; } catch (e) {}
-  site = site.replace(/[^a-zA-Z0-9.\-]/g, '-');
+  site = site.replace(/[^a-zA-Z0-9.-]/g, '-');
   const d = new Date(ts), p = n => String(n).padStart(2, '0');
   const stamp = `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
   return `${site}-${stamp}.${(format || 'webp').toLowerCase()}`;

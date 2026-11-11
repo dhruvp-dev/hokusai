@@ -37,7 +37,10 @@
     "screenshot": "node src/cli/index.js",
     "ext:build": "pnpm --filter hokusai-extension build",
     "ext:watch": "pnpm --filter hokusai-extension watch",
-    "ext:package": "pnpm --filter hokusai-extension package"
+    "ext:package": "pnpm --filter hokusai-extension package",
+    "test": "node --test \"test/**/*.test.js\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "playwright": "^1.45.0",
@@ -46,5 +49,10 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0"
   }
 }

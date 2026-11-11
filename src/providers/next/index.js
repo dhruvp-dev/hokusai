@@ -66,7 +66,7 @@ export default class NextProvider {
       await waitForServer(url, 30000);
     } catch (err) {
       child.kill('SIGTERM');
-      throw new Error(`Failed to start Next.js server for ${siteDir}: ${err.message}`);
+      throw new Error(`Failed to start Next.js server for ${siteDir}: ${err.message}`, { cause: err });
     }
 
     const teardown = async () => {

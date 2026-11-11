@@ -66,7 +66,7 @@ export default class ViteProvider {
       await waitForServer(url, 20000);
     } catch (err) {
       child.kill('SIGTERM');
-      throw new Error(`Failed to start Vite server for ${siteDir}: ${err.message}`);
+      throw new Error(`Failed to start Vite server for ${siteDir}: ${err.message}`, { cause: err });
     }
 
     const teardown = async () => {

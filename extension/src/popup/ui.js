@@ -116,13 +116,6 @@ export function renderRecentCaptures(container, list) {
 
 // ── Helpers ───────────────────────────────────
 
-/** Re-scales an inline SVG string to a given px size */
-function resizeIcon(svgStr, size) {
-  return svgStr
-    .replace(/width="[^"]*"/, `width="${size}"`)
-    .replace(/height="[^"]*"/, `height="${size}"`);
-}
-
 function extractDomain(url) {
   if (!url) return 'localhost';
   try { return new URL(url).hostname; } catch { return url; }

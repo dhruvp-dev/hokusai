@@ -1,4 +1,4 @@
-export async function captureVisible(tabId) {
+export async function captureVisible(_tabId) {
   if (typeof browser !== 'undefined' && browser.tabs?.captureVisibleTab) {
     return await browser.tabs.captureVisibleTab(null, { format: 'png' });
   }

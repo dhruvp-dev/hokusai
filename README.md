@@ -4,6 +4,15 @@
 
 # Hokusai
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/hokusai-ss"><img src="https://img.shields.io/npm/v/hokusai-ss?color=cb3837&logo=npm" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/hokusai-ss"><img src="https://img.shields.io/npm/dm/hokusai-ss" alt="npm downloads"></a>
+  <a href="https://github.com/dhruvp-dev/hokusai/actions/workflows/ci.yml"><img src="https://github.com/dhruvp-dev/hokusai/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/dhruvp-dev/hokusai" alt="License: MIT"></a>
+  <img src="https://img.shields.io/node/v/hokusai-ss" alt="Node version">
+  <img src="https://img.shields.io/badge/Firefox-extension-ff7139?logo=firefoxbrowser&logoColor=white" alt="Firefox extension">
+</p>
+
 > **Beautiful website screenshots. Zero configuration.**
 
 Hokusai is an open-source, zero-configuration screenshot utility for static HTML portfolio websites. It automatically discovers local site directories, hosts them on temporary static servers, and generates framed portfolio screenshots across multiple viewports using Playwright and Sharp.
@@ -205,6 +214,17 @@ pnpm ext:build        # build the extension into extension/dist
 pnpm ext:watch        # rebuild on change
 pnpm ext:package      # build and zip to extension/hokusai-extension.zip
 ```
+
+### Development
+
+```bash
+pnpm install
+pnpm lint       # ESLint across the CLI, tests and extension
+pnpm test       # unit tests (node:test)
+pnpm ext:build  # build the extension
+```
+
+CI runs lint, tests and the extension build on Node 18, 20 and 22.
 
 ## License
 

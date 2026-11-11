@@ -15,7 +15,7 @@ export function waitForServer(url, timeoutMs = 30000, intervalMs = 250) {
         return reject(new Error(`Server at ${url} did not become ready within ${timeoutMs}ms`));
       }
 
-      const req = http.get(url, (res) => {
+      const req = http.get(url, () => {
         // Any HTTP status means the server is listening and ready
         req.destroy();
         resolve();

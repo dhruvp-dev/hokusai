@@ -20,7 +20,7 @@ export default class Reporter {
    * Called when a site starts processing.
    * @param {import('../../models/Site.js').default} site
    */
-  siteStarted(site) {
+  siteStarted(_site) {
     // Dimmed progress is printed on completion
   }
 
