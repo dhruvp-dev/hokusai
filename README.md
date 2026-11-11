@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/hokusai-ss"><img src="https://img.shields.io/npm/v/hokusai-ss?color=cb3837&logo=npm" alt="npm version"></a>
   <a href="https://www.npmjs.com/package/hokusai-ss"><img src="https://img.shields.io/npm/dm/hokusai-ss" alt="npm downloads"></a>
-  <a href="https://github.com/dhruvp-dev/hokusai/actions/workflows/ci.yml"><img src="https://github.com/dhruvp-dev/hokusai/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/dhruvp-dev/hokusai/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/dhruvp-dev/hokusai/ci.yml?branch=main&logo=github&label=CI" alt="CI"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/dhruvp-dev/hokusai" alt="License: MIT"></a>
   <img src="https://img.shields.io/node/v/hokusai-ss" alt="Node version">
   <img src="https://img.shields.io/badge/Firefox-extension-ff7139?logo=firefoxbrowser&logoColor=white" alt="Firefox extension">
