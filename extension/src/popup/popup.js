@@ -1,13 +1,15 @@
 import { getState, setState, subscribe } from './state.js';
 import { executeCapture } from './actions.js';
 import { copyCaptureToClipboard, triggerDownload } from './preview.js';
-import { bindSettingsControls } from './settings.js';
+import { bindSettingsControls, updateSliderFill } from './settings.js';
 import { setupUIElements, updateThemeUI, renderRecentCaptures } from './ui.js';
 import { settings, history } from '../storage/index.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // 1. Initial UI setup & Icons
   setupUIElements();
+
+  let selectedMode = 'CAPTURE_VISIBLE';
 
   // 2. Subscribe State Changes FIRST so setting updates trigger UI sync
   subscribe(state => {
@@ -45,9 +47,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (state.padding !== undefined) {
       const padVal = Number(state.padding) || 40;
       const slider = document.getElementById('input-padding');
-      const badge = document.getElementById('padding-val-badge');
-      if (slider) slider.value = padVal;
-      if (badge) badge.textContent = `${padVal}px`;
+      const num = document.getElementById('padding-num');
+      if (slider) { slider.value = padVal; updateSliderFill(slider); }
+      if (num && document.activeElement !== num) num.value = padVal;
+    }
+
+
+    // Capture button: shimmering label while working (no spinner)
+    const capBtn = document.getElementById('btn-submit-capture');
+    if (capBtn) {
+      const lbl = capBtn.querySelector('.lbl');
+      capBtn.classList.toggle('is-working', !!state.isCapturing);
+      capBtn.toggleAttribute('aria-busy', !!state.isCapturing);
+      capBtn.disabled = !!state.isCapturing;
+      if (lbl) lbl.textContent = state.isCapturing ? 'Capturing' : 'Capture';
     }
 
     // Update preview if capture exists
@@ -71,9 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 4. Bind Event Handlers
   bindSettingsControls();
 
-  // 3-Column capture mode selection
-  let selectedMode = 'CAPTURE_VISIBLE';
-  
+  // Capture mode selection
   const captureCards = [
     { id: 'act-visible', mode: 'CAPTURE_VISIBLE', key: '1' },
     { id: 'act-fullpage', mode: 'CAPTURE_FULLPAGE', key: '2' },
@@ -83,21 +94,28 @@ document.addEventListener('DOMContentLoaded', async () => {
   function selectCaptureMode(targetId, mode) {
     captureCards.forEach(c => {
       const cardEl = document.getElementById(c.id);
-      if (cardEl) cardEl.classList.toggle('active', c.id === targetId);
+      if (cardEl) {
+        cardEl.classList.toggle('active', c.id === targetId);
+        cardEl.setAttribute('aria-checked', String(c.id === targetId));
+      }
     });
     selectedMode = mode;
 
     const deviceSection = document.getElementById('device-section');
     if (deviceSection) {
-      deviceSection.classList.toggle('hidden', mode !== 'CAPTURE_RESPONSIVE');
+      deviceSection.dataset.open = String(mode === 'CAPTURE_RESPONSIVE');
     }
   }
 
   captureCards.forEach(item => {
     const el = document.getElementById(item.id);
     if (!el) return;
-    el.addEventListener('click', () => {
-      selectCaptureMode(item.id, item.mode);
+    el.addEventListener('click', () => selectCaptureMode(item.id, item.mode));
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        selectCaptureMode(item.id, item.mode);
+      }
     });
   });
 
@@ -127,11 +145,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('btn-submit-capture')?.addEventListener('click', () => {
     const currentDevice = getState().device || 'desktop';
     executeCapture(selectedMode, currentDevice);
-  });
-
-  // Cancel button closes popup window
-  document.getElementById('btn-cancel-popup')?.addEventListener('click', () => {
-    window.close();
   });
 
   // Frame Cards
@@ -177,28 +190,31 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Copy & Download
   document.getElementById('btn-copy')?.addEventListener('click', async () => {
     const { lastCapture } = getState();
-    if (lastCapture?.dataUrl) {
-      const copyBtn = document.getElementById('btn-copy');
-      const success = await copyCaptureToClipboard(lastCapture.dataUrl);
-      if (success && copyBtn) {
-        const orig = copyBtn.innerHTML;
-        copyBtn.innerText = 'Copied!';
-        setTimeout(() => copyBtn.innerHTML = orig, 1500);
-      }
-    }
+    if (!lastCapture?.dataUrl) return;
+    const copyBtn = document.getElementById('btn-copy');
+    const lbl = copyBtn?.querySelector('.lbl');
+    const success = await copyCaptureToClipboard(lastCapture.dataUrl);
+    if (!copyBtn || !lbl) return;
+    clearTimeout(copyBtn._t);
+    copyBtn.classList.toggle('is-copied', success);
+    copyBtn.classList.toggle('is-error', !success);
+    lbl.textContent = success ? 'Copied' : 'Copy failed';
+    copyBtn._t = setTimeout(() => {
+      copyBtn.classList.remove('is-copied', 'is-error');
+      lbl.textContent = 'Copy';
+    }, 1600);
   });
 
   document.getElementById('btn-download')?.addEventListener('click', async () => {
     const { lastCapture, format } = getState();
-    if (lastCapture?.dataUrl) {
-      const dlBtn = document.getElementById('btn-download');
-      const origHtml = dlBtn ? dlBtn.innerHTML : '';
-      if (dlBtn) dlBtn.innerText = 'Downloading...';
-      const success = await triggerDownload(lastCapture.dataUrl, format || lastCapture.format || 'webp');
-      if (dlBtn) {
-        dlBtn.innerText = success ? 'Downloaded!' : 'Failed';
-        setTimeout(() => { dlBtn.innerHTML = origHtml; }, 1500);
-      }
+    if (!lastCapture?.dataUrl) return;
+    const dlBtn = document.getElementById('btn-download');
+    const lbl = dlBtn?.querySelector('span');
+    if (lbl) lbl.textContent = 'Downloading…';
+    const success = await triggerDownload(lastCapture.dataUrl, format || lastCapture.format || 'webp', null, lastCapture.url);
+    if (lbl) {
+      lbl.textContent = success ? 'Saved' : 'Failed';
+      setTimeout(() => { lbl.textContent = 'Download'; }, 1500);
     }
   });
 

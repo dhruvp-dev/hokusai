@@ -3,49 +3,21 @@ import { copyCaptureToClipboard, triggerDownload } from './preview.js';
 import { history } from '../storage/index.js';
 
 export function setupUIElements() {
-  // Logo
+  // Logo (the rest of the icons are static markup in index.html)
   const logoEl = document.getElementById('logo-icon');
   if (logoEl) logoEl.innerHTML = ICONS.ICON_HOKUSAI;
-
-  // Tab favicon
-  const faviconEl = document.getElementById('tab-favicon-icon');
-  if (faviconEl) faviconEl.innerHTML = ICONS.ICON_GLOBE;
-
-  // Header buttons
-  const themeBtn = document.getElementById('btn-theme');
-  if (themeBtn) themeBtn.innerHTML = ICONS.ICON_MOON;
-
-  const settingsBtn = document.getElementById('btn-settings');
-  if (settingsBtn) settingsBtn.innerHTML = ICONS.ICON_SETTINGS;
-
-  // Action card icons (large, 20px versions)
-  const visIcon = document.getElementById('icon-visible');
-  if (visIcon) visIcon.innerHTML = resizeIcon(ICONS.ICON_LIGHTNING, 18);
-
-  const fullIcon = document.getElementById('icon-fullpage');
-  if (fullIcon) fullIcon.innerHTML = resizeIcon(ICONS.ICON_SCROLL, 18);
-
-  const respIcon = document.getElementById('icon-responsive');
-  if (respIcon) respIcon.innerHTML = resizeIcon(ICONS.ICON_DEVICES, 18);
-
-  // Main preview action buttons
-  const copyBtn = document.getElementById('btn-copy');
-  if (copyBtn) copyBtn.innerHTML = `${ICONS.ICON_COPY} Copy`;
-
-  const dlBtn = document.getElementById('btn-download');
-  if (dlBtn) dlBtn.innerHTML = `${ICONS.ICON_DOWNLOAD} Download`;
 
   // Populate Current Tab URL
   if (typeof chrome !== 'undefined' && chrome.tabs) {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs && tabs[0] && tabs[0].url) {
+        const tabUrlEl = document.getElementById('current-tab-url');
+        if (!tabUrlEl) return;
         try {
           const urlObj = new URL(tabs[0].url);
-          const tabUrlEl = document.getElementById('current-tab-url');
-          if (tabUrlEl) tabUrlEl.textContent = urlObj.hostname + (urlObj.pathname !== '/' ? urlObj.pathname : '');
+          tabUrlEl.textContent = urlObj.hostname + (urlObj.pathname !== '/' ? urlObj.pathname : '');
         } catch {
-          const tabUrlEl = document.getElementById('current-tab-url');
-          if (tabUrlEl) tabUrlEl.textContent = tabs[0].url;
+          tabUrlEl.textContent = tabs[0].url;
         }
       }
     });
@@ -56,8 +28,9 @@ export function updateThemeUI(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   const themeBtn = document.getElementById('btn-theme');
   if (themeBtn) {
-    themeBtn.innerHTML = theme === 'dark' ? ICONS.ICON_MOON : ICONS.ICON_SUN;
-    themeBtn.title = theme === 'dark' ? 'Switch to Light' : 'Switch to Dark';
+    const label = theme === 'dark' ? 'Switch to light' : 'Switch to dark';
+    themeBtn.setAttribute('data-tip', label);
+    themeBtn.setAttribute('aria-label', label);
   }
 }
 
@@ -79,9 +52,9 @@ export function renderRecentCaptures(container, list) {
           <span class="recent-card-meta">${item.frameStyle ? item.frameStyle : 'arc'} · ${item.format ? item.format.toUpperCase() : 'WEBP'} · ${timeAgo(item.timestamp)}</span>
         </div>
         <div class="recent-card-actions">
-          <button class="action-icon-btn btn-recent-copy" data-idx="${idx}" title="Copy to clipboard">${ICONS.ICON_COPY}</button>
-          <button class="action-icon-btn btn-recent-download" data-idx="${idx}" title="Download">${ICONS.ICON_DOWNLOAD}</button>
-          <button class="action-icon-btn btn-recent-delete" data-idx="${idx}" title="Delete capture">${ICONS.ICON_TRASH}</button>
+          <button class="action-icon-btn btn-recent-copy" data-idx="${idx}" data-tip="Copy" aria-label="Copy">${ICONS.ICON_COPY}</button>
+          <button class="action-icon-btn btn-recent-download" data-idx="${idx}" data-tip="Download" aria-label="Download">${ICONS.ICON_DOWNLOAD}</button>
+          <button class="action-icon-btn btn-recent-delete" data-idx="${idx}" data-tip="Delete" aria-label="Delete">${ICONS.ICON_TRASH}</button>
         </div>
       </div>
     </div>
@@ -94,11 +67,15 @@ export function renderRecentCaptures(container, list) {
       const item = list[parseInt(e.currentTarget.getAttribute('data-idx'))];
       if (item?.dataUrl) {
         const ok = await copyCaptureToClipboard(item.dataUrl);
-        if (ok) {
-          const orig = e.currentTarget.innerHTML;
-          e.currentTarget.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
-          setTimeout(() => { e.currentTarget.innerHTML = orig; }, 1500);
-        }
+        const btn = e.currentTarget;
+        clearTimeout(btn._t);
+        btn.classList.toggle('is-copied', ok);
+        btn.classList.toggle('is-error', !ok);
+        btn.setAttribute('data-tip', ok ? 'Copied' : 'Copy failed');
+        btn._t = setTimeout(() => {
+          btn.classList.remove('is-copied', 'is-error');
+          btn.setAttribute('data-tip', 'Copy');
+        }, 1600);
       }
     });
   });
@@ -109,7 +86,7 @@ export function renderRecentCaptures(container, list) {
       e.stopPropagation();
       const item = list[parseInt(e.currentTarget.getAttribute('data-idx'))];
       if (item?.dataUrl) {
-        await triggerDownload(item.dataUrl, item.format || 'webp');
+        await triggerDownload(item.dataUrl, item.format || 'webp', null, item.url);
       }
     });
   });

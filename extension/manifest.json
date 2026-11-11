@@ -3,6 +3,12 @@
   "name": "Hokusai",
   "version": "0.1.0",
   "description": "Beautiful website screenshots. Zero configuration.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "hokusai@dhruvp-dev.github.io",
+      "strict_min_version": "115.0"
+    }
+  },
   "permissions": [
     "activeTab",
     "tabs",

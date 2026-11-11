@@ -41,35 +41,78 @@ export function bindSettingsControls() {
 
   const qualitySlider = document.getElementById('setting-quality');
   const qualityBadge = document.getElementById('quality-val-badge');
-  qualitySlider?.addEventListener('input', async (e) => {
+  qualitySlider?.addEventListener('input', (e) => {
     const quality = parseInt(e.target.value, 10);
     if (qualityBadge) qualityBadge.textContent = `${quality}%`;
+    updateSliderFill(qualitySlider);
     setState({ quality });
-    await settings.set({ quality });
+    persistDebounced({ quality });
   });
 
   const drawerPaddingSlider = document.getElementById('setting-padding');
   const drawerPaddingBadge = document.getElementById('drawer-padding-val-badge');
   const mainPaddingSlider = document.getElementById('input-padding');
-  const mainPaddingBadge = document.getElementById('padding-val-badge');
+  const paddingNum = document.getElementById('padding-num');
 
-  drawerPaddingSlider?.addEventListener('input', async (e) => {
-    const padding = parseInt(e.target.value, 10);
-    if (drawerPaddingBadge) drawerPaddingBadge.textContent = `${padding}px`;
-    if (mainPaddingBadge) mainPaddingBadge.textContent = `${padding}px`;
-    if (mainPaddingSlider) mainPaddingSlider.value = padding;
-    setState({ padding });
-    await settings.set({ padding });
-  });
+  const PAD_MIN = 16, PAD_MAX = 96;
+  const clampPad = (v) => Math.min(PAD_MAX, Math.max(PAD_MIN, Math.round(Number(v) || PAD_MIN)));
 
-  mainPaddingSlider?.addEventListener('input', async (e) => {
-    const padding = parseInt(e.target.value, 10);
-    if (mainPaddingBadge) mainPaddingBadge.textContent = `${padding}px`;
+  const applyPadding = (padding, { syncNum = true } = {}) => {
     if (drawerPaddingBadge) drawerPaddingBadge.textContent = `${padding}px`;
-    if (drawerPaddingSlider) drawerPaddingSlider.value = padding;
+    if (paddingNum && syncNum) paddingNum.value = padding;
+    if (mainPaddingSlider) { mainPaddingSlider.value = padding; updateSliderFill(mainPaddingSlider); }
+    if (drawerPaddingSlider) { drawerPaddingSlider.value = padding; updateSliderFill(drawerPaddingSlider); }
     setState({ padding });
-    await settings.set({ padding });
+    persistDebounced({ padding });
+  };
+
+  // Magnetic snap points: small pull-in zone, larger release zone, label pulses on catch
+  const SNAPS = [16, 24, 32, 40, 48, 64, 80, 96];
+  const PULL = 2, RELEASE = 5;
+  let snapped = null;
+  const snap = (v) => {
+    if (snapped !== null && Math.abs(v - snapped) <= RELEASE) return snapped;
+    snapped = null;
+    const near = SNAPS.find(x => Math.abs(v - x) <= PULL);
+    if (near !== undefined) {
+      snapped = near;
+      const field = paddingNum?.closest('.num-field');
+      if (field) { field.classList.remove('pulse'); void field.offsetWidth; field.classList.add('pulse'); }
+      return near;
+    }
+    return v;
+  };
+
+  drawerPaddingSlider?.addEventListener('input', (e) => applyPadding(parseInt(e.target.value, 10)));
+  mainPaddingSlider?.addEventListener('input', (e) => applyPadding(snap(parseInt(e.target.value, 10))));
+
+  // Number field: type a value, clamped to the slider range on commit
+  paddingNum?.addEventListener('input', () => {
+    if (paddingNum.value !== '') applyPadding(clampPad(paddingNum.value), { syncNum: false });
   });
+  paddingNum?.addEventListener('change', () => applyPadding(clampPad(paddingNum.value || PAD_MIN)));
+  paddingNum?.addEventListener('keydown', (e) => { if (e.key === 'Enter') paddingNum.blur(); });
+
+  document.querySelectorAll('.range-slider').forEach(updateSliderFill);
+}
+
+export function updateSliderFill(el) {
+  if (!el) return;
+  const min = Number(el.min) || 0;
+  const max = Number(el.max) || 100;
+  el.style.setProperty('--pct', `${((Number(el.value) - min) / (max - min)) * 100}%`);
+}
+
+let pending = {};
+let persistTimer;
+function persistDebounced(patch) {
+  Object.assign(pending, patch);
+  clearTimeout(persistTimer);
+  persistTimer = setTimeout(() => {
+    const out = pending;
+    pending = {};
+    settings.set(out);
+  }, 200);
 }
 
 function syncDrawerFields() {
@@ -81,6 +124,7 @@ function syncDrawerFields() {
   const qualityBadge = document.getElementById('quality-val-badge');
   if (qualitySlider && currentState.quality) {
     qualitySlider.value = currentState.quality;
+    updateSliderFill(qualitySlider);
     if (qualityBadge) qualityBadge.textContent = `${currentState.quality}%`;
   }
 
@@ -88,6 +132,7 @@ function syncDrawerFields() {
   const drawerPaddingBadge = document.getElementById('drawer-padding-val-badge');
   if (drawerPaddingSlider && currentState.padding) {
     drawerPaddingSlider.value = currentState.padding;
+    updateSliderFill(drawerPaddingSlider);
     if (drawerPaddingBadge) drawerPaddingBadge.textContent = `${currentState.padding}px`;
   }
 }
